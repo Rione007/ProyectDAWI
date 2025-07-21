@@ -26,18 +26,6 @@ public class Product {
     @Column(nullable = true)
     private String description;
 
-    public Product() {
-    }
-
-    public Product(Long id, String name, String category, int stock, BigDecimal price, String description) {
-        this.id = id;
-        this.name = name;
-        this.category = category;
-        this.stock = stock;
-        this.price = price;
-        this.description = description;
-    }
-
     public Long getId() {
         return id;
     }
