@@ -2,7 +2,7 @@ package com.erp.dawsystem.service.impl;
 
 import com.erp.dawsystem.entity.Product;
 import com.erp.dawsystem.repository.ProductRepository;
-import com.erp.dawsystem.service.interfaces.ProductoService;
+import com.erp.dawsystem.service.interfaces.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class ProductoServiceImpl implements ProductoService {
+public class ProductServiceImpl implements ProductService {
     @Autowired
     private ProductRepository productRepository;
 

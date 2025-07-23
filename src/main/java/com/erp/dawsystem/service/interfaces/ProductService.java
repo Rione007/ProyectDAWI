@@ -5,7 +5,7 @@ import com.erp.dawsystem.entity.Product;
 import java.math.BigDecimal;
 import java.util.List;
 
-public interface ProductoService{
+public interface ProductService {
 
     List<Product> findAll(); //Listar todos los productos
     Product findById(Long id); //Obtener uno por ID

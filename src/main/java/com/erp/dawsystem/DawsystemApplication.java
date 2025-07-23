@@ -12,20 +12,8 @@ public class DawsystemApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(DawsystemApplication.class, args);
-		//abrir el localhost
-		openHomePage();
-	}
 
-	private static void openHomePage() {
-		if (Desktop.isDesktopSupported()) {
-			try {
-				Desktop.getDesktop().browse(new URI("http://localhost:8080"));
-			} catch (IOException | RuntimeException | java.net.URISyntaxException e) {
-				System.err.println("No se pudo abrir el navegador: " + e.getMessage());
-			}
-		} else {
-			System.out.println("Desktop no es compatible en este sistema.");
-		}
-	}
+		System.out.println("Aplicación iniciada en http://localhost:8080");
 
+	}
 }

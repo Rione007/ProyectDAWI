@@ -1,30 +1,36 @@
 package com.erp.dawsystem.entity;
+
 import jakarta.persistence.*;
 import java.math.BigDecimal;
+import java.util.Objects;
+
+@Entity
+@Table(name = "DetalleVenta")
 public class SaleDetail {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "sale_id")
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "sale_id", nullable = false)
     private Sale sale;
 
-    @ManyToOne
-    @JoinColumn(name = "product_id")
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
+    @Column(nullable = false)
     private int quantity;
 
+    @Column(nullable = false)
     private BigDecimal unitPrice;
 
+    @Column(nullable = false)
     private BigDecimal subtotal;
 
-    // Constructor vacío
-    public SaleDetail() {
-    }
+    public SaleDetail() {}
 
-    // Constructor completo
     public SaleDetail(Sale sale, Product product, int quantity, BigDecimal unitPrice) {
         this.sale = sale;
         this.product = product;
@@ -33,58 +39,45 @@ public class SaleDetail {
         this.subtotal = unitPrice.multiply(BigDecimal.valueOf(quantity));
     }
 
-    // Getters y setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public Long getId() {
-        return id;
-    }
+    public Sale getSale() { return sale; }
+    public void setSale(Sale sale) { this.sale = sale; }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public Product getProduct() { return product; }
+    public void setProduct(Product product) { this.product = product; }
 
-    public Sale getSale() {
-        return sale;
-    }
-
-    public void setSale(Sale sale) {
-        this.sale = sale;
-    }
-
-    public Product getProduct() {
-        return product;
-    }
-
-    public void setProduct(Product product) {
-        this.product = product;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
+    public int getQuantity() { return quantity; }
     public void setQuantity(int quantity) {
         this.quantity = quantity;
         updateSubtotal();
     }
 
-    public BigDecimal getUnitPrice() {
-        return unitPrice;
-    }
-
+    public BigDecimal getUnitPrice() { return unitPrice; }
     public void setUnitPrice(BigDecimal unitPrice) {
         this.unitPrice = unitPrice;
         updateSubtotal();
     }
 
-    public BigDecimal getSubtotal() {
-        return subtotal;
-    }
+    public BigDecimal getSubtotal() { return subtotal; }
 
-    // Método para actualizar el subtotal automáticamente
     private void updateSubtotal() {
         if (unitPrice != null && quantity >= 0) {
             this.subtotal = unitPrice.multiply(BigDecimal.valueOf(quantity));
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof SaleDetail)) return false;
+        SaleDetail that = (SaleDetail) o;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
