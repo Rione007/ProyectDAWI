@@ -1,0 +1,90 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+
+<section layout:fragment="content">
+    <div class="container-fluid px-4">
+        <h1 class="mt-4">Nueva Venta</h1>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item active">Registrar una nueva venta</li>
+        </ol>
+
+        <!-- Selección de cliente -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <i class="fas fa-user me-1"></i> Datos del Cliente
+            </div>
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label for="cliente" class="form-label">Cliente</label>
+                        <select id="cliente" class="form-select">
+                            <option value="">Seleccione un cliente</option>
+                            <option value="1">Juan Pérez</option>
+                            <option value="2">María López</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="fecha" class="form-label">Fecha</label>
+                        <input type="date" id="fecha" class="form-control" value="2025-07-23">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Agregar productos -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <i class="fas fa-box me-1"></i> Productos
+            </div>
+            <div class="card-body">
+                <div class="row g-3 align-items-end">
+                    <div class="col-md-6">
+                        <label for="producto" class="form-label">Producto</label>
+                        <select id="producto" class="form-select">
+                            <option value="">Seleccione un producto</option>
+                            <option value="1" data-precio="50">Producto A</option>
+                            <option value="2" data-precio="80">Producto B</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="cantidad" class="form-label">Cantidad</label>
+                        <input type="number" id="cantidad" class="form-control" min="1" value="1">
+                    </div>
+                    <div class="col-md-3 text-end">
+                        <button id="btnAgregar" class="btn btn-success w-100">Agregar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Detalle de productos -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <i class="fas fa-table me-1"></i> Detalle de la Venta
+            </div>
+            <div class="card-body">
+                <table class="table table-striped" id="tablaDetalle">
+                    <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Cantidad</th>
+                        <th>Precio</th>
+                        <th>Subtotal</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <!-- Se llenará dinámicamente -->
+                    </tbody>
+                </table>
+                <div class="text-end">
+                    <h4>Total: S/ <span id="totalVenta">0</span></h4>
+                    <button class="btn btn-primary mt-2">Confirmar Venta</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+</html>
