@@ -1,0 +1,89 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+
+<section layout:fragment="content">
+    <div class="container-fluid px-4">
+        <h1 class="mt-4">Control de Stock</h1>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item active">Monitoreo de inventario</li>
+        </ol>
+
+        <!-- Filtros -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <i class="fas fa-filter me-1"></i> Filtros
+            </div>
+            <div class="card-body">
+                <form class="row g-3">
+                    <div class="col-md-6">
+                        <label for="nombreProducto" class="form-label">Nombre</label>
+                        <input type="text" id="nombreProducto" class="form-control" placeholder="Buscar producto...">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="categoria" class="form-label">Categoría</label>
+                        <select id="categoria" class="form-select">
+                            <option value="">Todas</option>
+                            <option value="Electrónica">Electrónica</option>
+                            <option value="Ropa">Ropa</option>
+                            <option value="Alimentos">Alimentos</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2 align-self-end">
+                        <button type="button" class="btn btn-primary w-100">Buscar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Tabla de control de stock -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <i class="fas fa-box me-1"></i> Productos y Stock
+            </div>
+            <div class="card-body">
+                <table class="table table-bordered table-striped">
+                    <thead class="table-dark">
+                    <tr>
+                        <th>#</th>
+                        <th>Nombre</th>
+                        <th>Categoría</th>
+                        <th>Stock</th>
+                        <th>Acciones</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Mouse Gamer</td>
+                        <td>Electrónica</td>
+                        <td>
+                            <span class="badge bg-success">25</span>
+                        </td>
+                        <td>
+                            <a href="#" class="btn btn-sm btn-warning">
+                                <i class="fas fa-edit"></i> Ajustar
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Camisa Blanca</td>
+                        <td>Ropa</td>
+                        <td>
+                            <span class="badge bg-danger">3</span> <!-- Stock bajo -->
+                        </td>
+                        <td>
+                            <a href="#" class="btn btn-sm btn-warning">
+                                <i class="fas fa-edit"></i> Ajustar
+                            </a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</section>
+</html>
