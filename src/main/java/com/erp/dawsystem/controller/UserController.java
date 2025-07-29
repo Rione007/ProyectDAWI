@@ -27,7 +27,7 @@ public class UserController {
     @GetMapping("/gestion_usuario")
     public String mostrarGestionUsuario(@RequestParam(required = false) String filtro,
                                         @RequestParam(required = false) Role rol,
-                                        @ModelAttribute("mensaje") String mensaje,  // CAMBIO AQUI
+                                        @ModelAttribute("mensaje") String mensaje,
                                         Model model) {
 
         List<User> usuarios = servicio.findAll();
@@ -50,28 +50,38 @@ public class UserController {
         model.addAttribute("filtro", filtro);
         model.addAttribute("rolSeleccionado", rol);
         model.addAttribute("roles", Role.values());
-        model.addAttribute("mensaje", mensaje);  // Esto ya no es estrictamente necesario, pero está bien
+        model.addAttribute("mensaje", mensaje);
 
         return "mantenimiento/gestion_usuario";
     }
 
     // Formulario nuevo usuario
     @GetMapping("/usuario_nuevo")
-    public String nuevoUsuario(Model model) {
+    public String nuevoUsuario(Model model, @ModelAttribute("error") String error) {
         model.addAttribute("usuario", new User());
         model.addAttribute("roles", Role.values());
+        model.addAttribute("error", error); // mostrar mensaje de error si lo hay
         return "mantenimiento/NuevoUsuario";
     }
 
     // Guardar usuario nuevo o editado
     @PostMapping("/usuario_guardar")
-    public String guardarUsuario(@ModelAttribute User usuario, RedirectAttributes redirectAttributes) {
+    public String guardarUsuario(@ModelAttribute User usuario,
+                                 RedirectAttributes redirectAttributes) {
+
+        // Validación solo para nuevo usuario
         if (usuario.getId() == null) {
+            if (servicio.existsByUsername(usuario.getUsername())) {
+                redirectAttributes.addFlashAttribute("error", "⚠️ El nombre de usuario ya está registrado. Intente con otro.");
+                return "redirect:/mantenimiento/usuario_nuevo";
+            }
             servicio.create(usuario);
+            redirectAttributes.addFlashAttribute("mensaje", "✅ Usuario registrado exitosamente.");
         } else {
             servicio.update(usuario.getId(), usuario);
+            redirectAttributes.addFlashAttribute("mensaje", "✅ Usuario actualizado exitosamente.");
         }
-        redirectAttributes.addFlashAttribute("mensaje", "✅ Usuario guardado exitosamente.");
+
         return "redirect:/mantenimiento/gestion_usuario";
     }
 

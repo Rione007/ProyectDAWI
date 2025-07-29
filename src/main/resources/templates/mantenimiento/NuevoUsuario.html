@@ -19,7 +19,15 @@
           <span th:text="${usuario.id == null} ? 'Registrar Nuevo Usuario' : 'Editar Usuario'"></span>
         </h2>
 
-        <!-- FORMULARIO CON ACCIÓN CORREGIDA -->
+        <!-- ⚠️ Alerta de error si ya existe el usuario -->
+        <div th:if="${error != null and error != ''}"
+             class="alert alert-danger alert-dismissible fade show"
+             role="alert">
+          <span th:text="${error}">Error</span>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+        </div>
+
+        <!-- FORMULARIO -->
         <form th:action="@{/mantenimiento/usuario_guardar}" th:object="${usuario}" method="post" class="needs-validation" novalidate>
           <input type="hidden" th:field="*{id}" />
 
