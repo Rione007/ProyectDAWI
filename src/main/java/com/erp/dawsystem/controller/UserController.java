@@ -52,7 +52,7 @@ public class UserController {
         model.addAttribute("roles", Role.values());
         model.addAttribute("mensaje", mensaje);
 
-        return "mantenimiento/gestion_usuario";
+        return "mantenimiento/usuario/gestion_usuario";
     }
 
     // Formulario nuevo usuario
@@ -61,7 +61,7 @@ public class UserController {
         model.addAttribute("usuario", new User());
         model.addAttribute("roles", Role.values());
         model.addAttribute("error", error); // mostrar mensaje de error si lo hay
-        return "mantenimiento/NuevoUsuario";
+        return "mantenimiento/usuario/NuevoUsuario";
     }
 
     // Guardar usuario nuevo o editado
@@ -73,7 +73,7 @@ public class UserController {
         if (usuario.getId() == null) {
             if (servicio.existsByUsername(usuario.getUsername())) {
                 redirectAttributes.addFlashAttribute("error", "⚠️ El nombre de usuario ya está registrado. Intente con otro.");
-                return "redirect:/mantenimiento/usuario_nuevo";
+                return "redirect:/mantenimiento/usuario/usuario_nuevo";
             }
             servicio.create(usuario);
             redirectAttributes.addFlashAttribute("mensaje", "✅ Usuario registrado exitosamente.");
@@ -82,7 +82,7 @@ public class UserController {
             redirectAttributes.addFlashAttribute("mensaje", "✅ Usuario actualizado exitosamente.");
         }
 
-        return "redirect:/mantenimiento/gestion_usuario";
+        return "redirect:/mantenimiento/usuario/gestion_usuario";
     }
 
     // Editar usuario
@@ -91,7 +91,7 @@ public class UserController {
         User usuario = servicio.findById(id).orElse(null);
         model.addAttribute("usuario", usuario);
         model.addAttribute("roles", Role.values());
-        return "mantenimiento/NuevoUsuario";
+        return "mantenimiento/usuario/NuevoUsuario";
     }
 
     // Eliminar usuario
@@ -99,6 +99,6 @@ public class UserController {
     public String eliminarUsuario(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         servicio.delete(id);
         redirectAttributes.addFlashAttribute("mensaje", "🗑️ Usuario eliminado correctamente.");
-        return "redirect:/mantenimiento/gestion_usuario";
+        return "redirect:/mantenimiento/usuario/gestion_usuario";
     }
 }
