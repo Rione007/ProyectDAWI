@@ -82,7 +82,7 @@ public class UserController {
             redirectAttributes.addFlashAttribute("mensaje", "✅ Usuario actualizado exitosamente.");
         }
 
-        return "redirect:/mantenimiento/usuario/gestion_usuario";
+        return "redirect:/mantenimiento/gestion_usuario";
     }
 
     // Editar usuario
@@ -99,6 +99,6 @@ public class UserController {
     public String eliminarUsuario(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         servicio.delete(id);
         redirectAttributes.addFlashAttribute("mensaje", "🗑️ Usuario eliminado correctamente.");
-        return "redirect:/mantenimiento/usuario/gestion_usuario";
+        return "redirect:/mantenimiento/gestion_usuario";
     }
 }
