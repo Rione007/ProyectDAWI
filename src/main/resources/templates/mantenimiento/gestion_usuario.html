@@ -19,8 +19,6 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
         </div>
 
-
-
         <!-- 🔍 Filtro por nombre y rol -->
         <div class="card mb-4">
             <div class="card-header">
@@ -80,8 +78,8 @@
                                 <i class="fas fa-edit"></i> Editar
                             </a>
                             <a th:href="@{/mantenimiento/usuario_eliminar/{id}(id=${u.id})}"
-                               class="btn btn-sm btn-danger"
-                               onclick="return confirm('¿Estás seguro que deseas eliminar al usuario: [[${u.username}]]?');">
+                               class="btn btn-sm btn-danger btn-eliminar"
+                               th:attr="data-username=${u.username}">
                                 <i class="fas fa-trash"></i> Eliminar
                             </a>
                         </td>
@@ -105,5 +103,20 @@
         }, 4000);
         /*]]>*/
     </script>
+
+    <!-- Confirmación para eliminar sin usar onclick -->
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        document.querySelectorAll('.btn-eliminar').forEach(function(btn) {
+            btn.addEventListener('click', function(event) {
+                var username = btn.getAttribute('data-username');
+                if (!confirm('¿Estás seguro que deseas eliminar al usuario: ' + username + '?')) {
+                    event.preventDefault();
+                }
+            });
+        });
+        /*]]>*/
+    </script>
+
 </section>
 </html>
