@@ -38,54 +38,6 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 });
 
-document.addEventListener("DOMContentLoaded", function () {
-    const btnAgregar = document.getElementById("btnAgregar");
-    const productoSelect = document.getElementById("producto");
-    const cantidadInput = document.getElementById("cantidad");
-    const tablaDetalle = document.querySelector("#tablaDetalle tbody");
-    const totalVenta = document.getElementById("totalVenta");
-
-    let total = 0;
-
-    btnAgregar.addEventListener("click", function () {
-        const producto = productoSelect.options[productoSelect.selectedIndex];
-        const cantidad = parseInt(cantidadInput.value);
-        const precio = parseFloat(producto.dataset.precio);
-
-        if (!producto.value) {
-            alert("Seleccione un producto");
-            return;
-        }
-
-        const subtotal = precio * cantidad;
-        total += subtotal;
-
-        // Agregar fila
-        const fila = document.createElement("tr");
-        fila.innerHTML = `
-            <td>${producto.text}</td>
-            <td>${cantidad}</td>
-            <td>S/ ${precio}</td>
-            <td>S/ ${subtotal}</td>
-            <td><button class="btn btn-danger btn-sm eliminar">X</button></td>
-        `;
-        tablaDetalle.appendChild(fila);
-
-        // Actualizar total
-        totalVenta.textContent = total;
-
-        // Reset campos
-        productoSelect.selectedIndex = 0;
-        cantidadInput.value = 1;
-
-        // Botón eliminar
-        fila.querySelector(".eliminar").addEventListener("click", function () {
-            total -= subtotal;
-            totalVenta.textContent = total;
-            fila.remove();
-        });
-    });
-});
 
 document.addEventListener("DOMContentLoaded", function () {
     const ctx = document.getElementById('ventasFechaChart');
@@ -141,5 +93,29 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 });
+
+
+// Scripts para Gestion de usuario:
+
+// Ocultar automáticamente la alerta
+setTimeout(function () {
+    var alerta = document.getElementById('alerta-exito');
+    if (alerta) {
+        alerta.classList.remove('show');
+        alerta.classList.add('fade');
+        alerta.style.display = 'none';
+    }
+}, 4000);
+
+// Confirmación al eliminar
+document.querySelectorAll('.btn-eliminar').forEach(function(btn) {
+    btn.addEventListener('click', function(event) {
+        var username = btn.getAttribute('data-username');
+        if (!confirm('¿Estás seguro que deseas eliminar al usuario: ' + username + '?')) {
+            event.preventDefault();
+        }
+    });
+});
+
 
 
