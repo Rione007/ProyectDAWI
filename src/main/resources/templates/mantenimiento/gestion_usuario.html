@@ -89,34 +89,5 @@
             </div>
         </div>
     </div>
-
-    <!-- ✅ Script para ocultar la alerta automáticamente -->
-    <script th:inline="javascript">
-        /*<![CDATA[*/
-        setTimeout(function () {
-            var alerta = document.getElementById('alerta-exito');
-            if (alerta) {
-                alerta.classList.remove('show');
-                alerta.classList.add('fade');
-                alerta.style.display = 'none';
-            }
-        }, 4000);
-        /*]]>*/
-    </script>
-
-    <!-- Confirmación para eliminar sin usar onclick -->
-    <script th:inline="javascript">
-        /*<![CDATA[*/
-        document.querySelectorAll('.btn-eliminar').forEach(function(btn) {
-            btn.addEventListener('click', function(event) {
-                var username = btn.getAttribute('data-username');
-                if (!confirm('¿Estás seguro que deseas eliminar al usuario: ' + username + '?')) {
-                    event.preventDefault();
-                }
-            });
-        });
-        /*]]>*/
-    </script>
-
 </section>
 </html>
