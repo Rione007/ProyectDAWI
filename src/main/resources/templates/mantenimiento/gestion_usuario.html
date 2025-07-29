@@ -10,7 +10,7 @@
             <li class="breadcrumb-item active">Listado de usuarios</li>
         </ol>
 
-        <!-- ✅ Alerta de éxito (sin errores Thymeleaf) -->
+        <!-- ✅ Alerta de éxito -->
         <div th:if="${mensaje != null and mensaje != ''}"
              class="alert alert-success alert-dismissible fade show"
              role="alert"
@@ -18,6 +18,8 @@
             <span th:text="${mensaje}">Mensaje de éxito</span>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
         </div>
+
+
 
         <!-- 🔍 Filtro por nombre y rol -->
         <div class="card mb-4">

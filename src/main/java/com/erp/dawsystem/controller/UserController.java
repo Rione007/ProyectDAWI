@@ -27,9 +27,8 @@ public class UserController {
     @GetMapping("/gestion_usuario")
     public String mostrarGestionUsuario(@RequestParam(required = false) String filtro,
                                         @RequestParam(required = false) Role rol,
-                                        Model model,
-                                        @RequestParam(value = "mensaje", required = false) String mensaje) {
-
+                                        @ModelAttribute("mensaje") String mensaje,  // CAMBIO AQUI
+                                        Model model) {
 
         List<User> usuarios = servicio.findAll();
 
@@ -51,7 +50,8 @@ public class UserController {
         model.addAttribute("filtro", filtro);
         model.addAttribute("rolSeleccionado", rol);
         model.addAttribute("roles", Role.values());
-        model.addAttribute("mensaje", mensaje);
+        model.addAttribute("mensaje", mensaje);  // Esto ya no es estrictamente necesario, pero está bien
+
         return "mantenimiento/gestion_usuario";
     }
 
@@ -71,7 +71,7 @@ public class UserController {
         } else {
             servicio.update(usuario.getId(), usuario);
         }
-        redirectAttributes.addFlashAttribute("mensaje", "✅ Usuario guardado exitosamente");
+        redirectAttributes.addFlashAttribute("mensaje", "✅ Usuario guardado exitosamente.");
         return "redirect:/mantenimiento/gestion_usuario";
     }
 
@@ -91,5 +91,4 @@ public class UserController {
         redirectAttributes.addFlashAttribute("mensaje", "🗑️ Usuario eliminado correctamente.");
         return "redirect:/mantenimiento/gestion_usuario";
     }
-
 }
