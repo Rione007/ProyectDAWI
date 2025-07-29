@@ -73,7 +73,7 @@ public class UserController {
         if (usuario.getId() == null) {
             if (servicio.existsByUsername(usuario.getUsername())) {
                 redirectAttributes.addFlashAttribute("error", "⚠️ El nombre de usuario ya está registrado. Intente con otro.");
-                return "redirect:/mantenimiento/usuario/usuario_nuevo";
+                return "redirect:/mantenimiento/usuario_nuevo";
             }
             servicio.create(usuario);
             redirectAttributes.addFlashAttribute("mensaje", "✅ Usuario registrado exitosamente.");
