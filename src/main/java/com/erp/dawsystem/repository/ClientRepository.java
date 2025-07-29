@@ -5,16 +5,20 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ClientRepository extends JpaRepository<Client, Long> {
 
-    List<Client> findByName(String name);
-
+    // Buscar por nombre ignorando mayúsculas
     List<Client> findByNameContainingIgnoreCase(String name);
 
-    Client findByEmail(String email);
+    // Buscar cliente por email
+    Optional<Client> findByEmail(String email);
 
+    // Verificar si ya existe un email (para evitar duplicados)
+    boolean existsByEmail(String email);
+
+    // Buscar por dirección ignorando mayúsculas
     List<Client> findByAddressContainingIgnoreCase(String address);
 }
-
