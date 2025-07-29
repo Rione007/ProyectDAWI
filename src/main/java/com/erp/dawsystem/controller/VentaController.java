@@ -17,4 +17,6 @@ public class VentaController {
     public String listadoVentas() {
         return "ventas/listado"; // templates/ventas/listado.html
     }
+
+
 }
