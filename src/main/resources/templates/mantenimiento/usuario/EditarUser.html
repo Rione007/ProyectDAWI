@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layout}">
+
+<head>
+  <title>Editar Usuario</title>
+  <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+</head>
+
+<body>
+<section layout:fragment="content">
+  <div class="container py-5">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <h2 class="mb-5 text-warning">
+          <i class="bi bi-pencil-square me-2"></i>
+          Editar Usuario
+        </h2>
+
+        <form th:action="@{/mantenimiento/usuario_guardar}" th:object="${usuario}" method="post" class="needs-validation" novalidate>
+          <input type="hidden" th:field="*{id}" />
+
+          <div class="mb-4">
+            <label class="form-label fw-semibold">
+              <i class="bi bi-person-fill me-1"></i>Nombre de Usuario
+            </label>
+            <input type="text" class="form-control" th:field="*{username}" placeholder="Ingrese el nombre de usuario" required>
+          </div>
+
+          <div class="mb-4">
+            <label class="form-label fw-semibold">
+              <i class="bi bi-lock-fill me-1"></i>Contraseña (dejar en blanco si no desea cambiarla)
+            </label>
+            <input type="password" class="form-control" th:field="*{password}" placeholder="Nueva contraseña (opcional)">
+          </div>
+
+          <div class="mb-4">
+            <label class="form-label fw-semibold">
+              <i class="bi bi-shield-lock-fill me-1"></i>Rol
+            </label>
+            <select class="form-select" th:field="*{role}" required>
+              <option value="" disabled>Seleccione un rol</option>
+              <option th:each="rol : ${T(com.erp.dawsystem.entity.Role).values()}"
+                      th:value="${rol}" th:text="${rol}">Rol</option>
+            </select>
+          </div>
+
+          <div class="d-flex justify-content-between mt-4">
+            <a th:href="@{/mantenimiento/gestion_usuario}" class="btn btn-outline-secondary">
+              <i class="bi bi-arrow-left-circle me-1"></i>Cancelar
+            </a>
+            <button type="submit" class="btn btn-warning text-white">
+              <i class="bi bi-save2-fill me-1"></i>Guardar Cambios
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+</body>
+</html>

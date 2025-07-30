@@ -5,6 +5,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
+import java.util.List;
+
+
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
@@ -13,4 +16,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     // Verificar si ya existe un username
     boolean existsByUsername(String username);
+
+    List<User> findByUsernameContainingIgnoreCase(String username);
 }

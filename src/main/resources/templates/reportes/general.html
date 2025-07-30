@@ -1,0 +1,78 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+
+<section layout:fragment="content">
+    <div class="container-fluid px-4">
+        <h1 class="mt-4">Reporte General de Ventas</h1>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item active">Resumen anual y mensual</li>
+        </ol>
+
+        <!-- KPIs -->
+        <div class="row mb-4">
+            <div class="col-xl-3 col-md-6">
+                <div class="card bg-primary text-white mb-4">
+                    <div class="card-body">Ventas Anuales: S/ 120,000</div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-md-6">
+                <div class="card bg-success text-white mb-4">
+                    <div class="card-body">Promedio Mensual: S/ 10,000</div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-md-6">
+                <div class="card bg-warning text-white mb-4">
+                    <div class="card-body">Mejor Mes: Julio</div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-md-6">
+                <div class="card bg-info text-white mb-4">
+                    <div class="card-body">Clientes Activos: 150</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gráfico comparativo mensual -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <i class="fas fa-chart-bar me-1"></i> Ventas Mensuales
+            </div>
+            <div class="card-body">
+                <canvas id="ventasGeneralChart" width="100%" height="40"></canvas>
+            </div>
+        </div>
+
+        <!-- Tabla opcional: Ventas por categoría -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <i class="fas fa-table me-1"></i> Ventas por Categoría
+            </div>
+            <div class="card-body">
+                <table class="table table-bordered table-striped">
+                    <thead class="table-dark">
+                    <tr>
+                        <th>Categoría</th>
+                        <th>Total Ventas (S/)</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>Electrónica</td>
+                        <td>50,000</td>
+                    </tr>
+                    <tr>
+                        <td>Ropa</td>
+                        <td>30,000</td>
+                    </tr>
+                    <tr>
+                        <td>Alimentos</td>
+                        <td>40,000</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+</html>
