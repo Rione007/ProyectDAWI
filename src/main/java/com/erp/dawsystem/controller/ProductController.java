@@ -75,6 +75,7 @@ public class ProductController {
             return "redirect:/productos/catalogo";
         }
         model.addAttribute("producto", producto);
+        model.addAttribute("categories", Category.values());
         return "productos/edit";
     }
 
