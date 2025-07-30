@@ -29,4 +29,7 @@ public interface UserService {
 
     // Verificar si un username ya existe
     boolean existsByUsername(String username);
+
+    void cambiarPassword(String username, String nuevaPassword);
+
 }
