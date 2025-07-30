@@ -1,0 +1,55 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+
+<section layout:fragment="content">
+    <div class="container py-4">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+
+                <div class="text-center mb-4">
+                    <h2 class="fw-bold">
+                        <i class="bi bi-box-seam text-primary me-2"></i>Detalle del Producto
+                    </h2>
+                    <p class="text-muted">Información completa del producto seleccionado</p>
+                </div>
+
+                <div class="border bg-white rounded shadow-sm p-4">
+
+                    <div class="mb-3">
+                        <strong>ID:</strong>
+                        <span th:text="${producto.id}"></span>
+                    </div>
+                    <div class="mb-3">
+                        <strong>Nombre:</strong>
+                        <span th:text="${producto.name}"></span>
+                    </div>
+                    <div class="mb-3">
+                        <strong>Categoría:</strong>
+                        <span th:text="${producto.category}"></span>
+                    </div>
+                    <div class="mb-3">
+                        <strong>Descripción:</strong>
+                        <span th:text="${producto.description}"></span>
+                    </div>
+                    <div class="mb-3">
+                        <strong>Precio:</strong>
+                        <span class="text-success fw-bold">S/. <span th:text="${producto.price}"></span></span>
+                    </div>
+                    <div class="mb-3">
+                        <strong>Stock:</strong>
+                        <span th:text="${producto.stock}"></span>
+                    </div>
+
+                    <div class="text-center mt-4">
+                        <a th:href="@{/productos/catalogo}" class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-left"></i> Volver al Catálogo
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+</html>

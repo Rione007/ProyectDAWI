@@ -1,5 +1,6 @@
 package com.erp.dawsystem.service.impl;
 
+import com.erp.dawsystem.entity.Category;
 import com.erp.dawsystem.entity.Product;
 import com.erp.dawsystem.repository.ProductRepository;
 import com.erp.dawsystem.service.interfaces.ProductService;
@@ -44,7 +45,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> findByCategory(String category) {
+    public List<Product> findByCategory(Category category) {
         return productRepository.findByCategory(category);
     }
 
@@ -60,17 +61,20 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void adjustStock(Long id, int stock) {
-        Optional<Product> optional = productRepository.findById(id);
-        if (optional.isPresent()) {
-            Product product = optional.get();
-            product.setStock(product.getStock() + stock);
-            productRepository.save(product);
-        }
+        Product product = productRepository.findById(id).orElseThrow(() -> new RuntimeException("Producto no encontrado"));
+        product.setStock(stock);
+        productRepository.save(product);
     }
 
     @Override
     public List<Product> findByPriceBetween(BigDecimal min, BigDecimal max) {
         return productRepository.findByPriceBetween(min, max);
     }
+
+    @Override
+    public List<Product> findByNameContainingAndCategory(String name, Category category) {
+        return productRepository.findByNameContainingAndCategory(name, category);
+    }
+
 
 }
