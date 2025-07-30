@@ -101,4 +101,31 @@ public class UserController {
         redirectAttributes.addFlashAttribute("mensaje", "🗑️ Usuario eliminado correctamente.");
         return "redirect:/mantenimiento/gestion_usuario";
     }
+
+    @PostMapping("/usuario/cambiar-password")
+    public String cambiarPasswordDesdeNavbar(@RequestParam String newPassword,
+                                             @RequestParam String confirmPassword,
+                                             RedirectAttributes redirectAttributes,
+                                             java.security.Principal principal) {
+
+        if (!newPassword.equals(confirmPassword)) {
+            redirectAttributes.addFlashAttribute("error", "⚠️ Las contraseñas no coinciden.");
+            return "redirect:/";
+        }
+
+        String username = principal.getName(); // Usuario autenticado
+        servicio.cambiarPassword(username, newPassword);
+
+        redirectAttributes.addFlashAttribute("mensaje", "✅ Contraseña actualizada correctamente.");
+        return "redirect:/";
+    }
+
+
+
+
+
+
+
+
+
 }

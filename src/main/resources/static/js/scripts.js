@@ -117,5 +117,18 @@ document.querySelectorAll('.btn-eliminar').forEach(function(btn) {
     });
 });
 
+// Confirmar  contraseña y nueva contraseña
 
+ document.getElementById("guardarPasswordBtn").addEventListener("click", function(event) {
+        const newPassword = document.getElementById("newPassword").value;
+        const confirmPassword = document.getElementById("confirmPassword").value;
+        const errorDiv = document.getElementById("passwordError");
+
+        if (newPassword !== confirmPassword) {
+            event.preventDefault();
+            errorDiv.classList.remove("d-none");
+        } else {
+            errorDiv.classList.add("d-none");
+        }
+    });
 
