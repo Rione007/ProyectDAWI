@@ -3,94 +3,67 @@
       layout:decorate="~{layout}">
 
 <section layout:fragment="content">
-  <div class="container-fluid px-4">
-    <h1 class="mt-4">Catálogo de Productos</h1>
-    <ol class="breadcrumb mb-4">
-      <li class="breadcrumb-item active">Listado de productos</li>
-    </ol>
+  <div class="container py-5">
 
-    <!-- Filtros -->
-    <div class="card mb-4">
-      <div class="card-header">
-        <i class="fas fa-filter me-1"></i> Filtros
-      </div>
-      <div class="card-body">
-        <form class="row g-3">
-          <div class="col-md-5">
-            <label for="nombreProducto" class="form-label">Nombre</label>
-            <input type="text" id="nombreProducto" class="form-control" placeholder="Buscar producto...">
-          </div>
-          <div class="col-md-5">
-            <label for="categoria" class="form-label">Categoría</label>
-            <select id="categoria" class="form-select">
-              <option value="">Todas</option>
-              <option value="Electrónica">Electrónica</option>
-              <option value="Ropa">Ropa</option>
-              <option value="Alimentos">Alimentos</option>
-            </select>
-          </div>
-          <div class="col-md-2 align-self-end">
-            <button type="button" class="btn btn-primary w-100">Buscar</button>
-          </div>
-        </form>
-      </div>
+    <div class="text-center mb-5">
+      <h1 class="display-4">Catálogo de Productos</h1>
+      <p class="lead">Página principal del sistema</p>
     </div>
 
-    <!-- Acciones -->
-    <div class="mb-3 d-flex justify-content-between">
-      <a href="/productos/nuevo" class="btn btn-success">
-        <i class="fas fa-plus"></i> Nuevo Producto
+    <form method="get" class="row g-3 mb-4">
+      <div class="col-md-4">
+        <input type="text" name="nombre" th:value="${nombre}" placeholder="Buscar por nombre" class="form-control">
+      </div>
+      <div class="col-md-4">
+        <select name="categoria" class="form-select">
+          <option value="" disabled selected>Seleccione categoría</option>
+          <option th:each="cat : ${categories}" th:value="${cat}" th:text="${cat}"
+                  th:selected="${cat == categoria}"></option>
+        </select>
+      </div>
+      <div class="col-md-4">
+        <button class="btn btn-primary w-100">Buscar</button>
+      </div>
+    </form>
+
+    <table class="table table-bordered table-hover">
+      <thead class="table-dark">
+      <tr>
+        <th>#</th>
+        <th>Nombre</th>
+        <th>Categoría</th>
+        <th>Precio</th>
+        <th>Stock</th>
+        <th>Acciones</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="product : ${products}">
+        <td th:text="${product.id}">1</td>
+        <td th:text="${product.name}">Nombre</td>
+        <td th:text="${product.category}">Categoría</td>
+        <td th:text="${product.price}">Precio</td>
+        <td th:text="${product.stock}">Stock</td>
+        <td>
+          <a th:href="@{/productos/detail/{id}(id=${product.id})}" class="btn btn-sm btn-info">Detalle</a>
+          <a th:href="@{/productos/edit/{id}(id=${product.id})}" class="btn btn-sm btn-warning">Editar</a>
+          <a th:href="@{/productos/delete/{id}(id=${product.id})}"
+             class="btn btn-sm btn-danger"
+             onclick="return confirm('¿Estás seguro de eliminar este producto?');">
+            Eliminar
+          </a>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+
+    <div class="text-end mt-4">
+      <a th:href="@{/productos/create}" class="btn btn-outline-success">
+        + Nuevo Producto
       </a>
-      <button class="btn btn-outline-secondary">
-        <i class="fas fa-file-excel"></i> Exportar Excel
-      </button>
-    </div>
-
-    <!-- Tabla de productos -->
-    <div class="card mb-4">
-      <div class="card-header">
-        <i class="fas fa-table me-1"></i> Productos Registrados
-      </div>
-      <div class="card-body">
-        <table class="table table-bordered table-striped">
-          <thead class="table-dark">
-          <tr>
-            <th>#</th>
-            <th>Nombre</th>
-            <th>Categoría</th>
-            <th>Precio</th>
-            <th>Stock</th>
-            <th>Acciones</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr>
-            <td>1</td>
-            <td>Mouse Gamer</td>
-            <td>Electrónica</td>
-            <td>S/ 80</td>
-            <td>25</td>
-            <td>
-              <a href="#" class="btn btn-sm btn-info"><i class="fas fa-eye"></i> Detalle</a>
-              <a href="#" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i> Editar</a>
-              <a href="#" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i> Eliminar</a>
-            </td>
-          </tr>
-          <tr>
-            <td>2</td>
-            <td>Camisa Blanca</td>
-            <td>Ropa</td>
-            <td>S/ 50</td>
-            <td>10</td>
-            <td>
-              <a href="#" class="btn btn-sm btn-info"><i class="fas fa-eye"></i> Detalle</a>
-              <a href="#" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i> Editar</a>
-              <a href="#" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i> Eliminar</a>
-            </td>
-          </tr>
-          </tbody>
-        </table>
-      </div>
+<!--      <a th:href="@{/productos/stock-control}" class="btn btn-outline-primary">-->
+<!--        Ir al Control de Stock-->
+<!--      </a>-->
     </div>
 
   </div>

@@ -1,0 +1,116 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+
+<section layout:fragment="content">
+    <div class="container py-5">
+
+        <div class="mb-4 text-center">
+            <h1 class="display-5">Control de Stock</h1>
+            <p class="lead">Gestión de existencias por producto</p>
+        </div>
+
+        <form method="get" class="row g-3 mb-4">
+            <div class="col-md-4">
+                <input type="text" name="nombre" th:value="${nombre}" placeholder="Buscar por nombre" class="form-control">
+            </div>
+            <div class="col-md-4">
+                <select name="categoria" class="form-select">
+                    <option>Todas</option>
+                    <option th:each="cat : ${categories}" th:value="${cat}" th:text="${cat}"
+                            th:selected="${cat == categoria}"></option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <button class="btn btn-primary w-100">Buscar</button>
+            </div>
+        </form>
+
+        <table class="table table-bordered table-hover align-middle text-center">
+            <thead class="table-dark">
+            <tr>
+                <th>Producto</th>
+                <th>Categoría</th>
+                <th>Stock</th>
+                <th>Ajustar</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="prod : ${products}">
+                <td th:text="${prod.name}">Nombre</td>
+                <td th:text="${prod.category}">Categoría</td>
+                <td>
+            <span th:text="${prod.stock}"
+                  th:classappend="${prod.stock < 9} ? 'badge bg-danger' : (${prod.stock < 14} ? 'badge bg-warning text-dark' : 'badge bg-success')">
+            </span>
+                </td>
+                <td>
+                    <button
+                            type="button"
+                            class="btn btn-sm btn-warning"
+                            data-bs-toggle="modal"
+                            data-bs-target="#stockModal"
+                            th:data-product-name="${prod.name}"
+                            th:data-product-id="${prod.id}">
+                        Ajustar
+                    </button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div class="mt-4 text-end">
+            <a th:href="@{/productos/catalogo}" class="btn btn-outline-primary">Regresar al Catálogo</a>
+        </div>
+
+    </div>
+
+    <!-- Modal de ajuste de stock -->
+    <div class="modal fade" id="stockModal" tabindex="-1" aria-labelledby="stockModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <form method="post" th:action="@{/productos/adjust-stock}">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="stockModalLabel">Ingrese nuevo stock</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" name="id" id="modalProductId" value="">
+
+                        <p>Producto: <span id="modalProductName"></span></p>
+
+                        <div class="mb-3">
+                            <label for="newStock" class="form-label">Nuevo stock:</label>
+                            <input type="number" class="form-control" id="newStock" name="stock" required min="0">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        const stockModal = document.getElementById('stockModal');
+
+        stockModal.addEventListener('show.bs.modal', event => {
+          const button = event.relatedTarget;
+          const productName = button.getAttribute('data-product-name');
+          const productId = button.getAttribute('data-product-id');
+
+          const modalProductName = stockModal.querySelector('#modalProductName');
+          const modalProductIdInput = stockModal.querySelector('#modalProductId');
+
+          modalProductName.textContent = productName;
+          modalProductIdInput.value = productId;
+          stockModal.querySelector('#newStock').value = '';
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</section>
+</html>
