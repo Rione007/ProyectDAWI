@@ -14,17 +14,24 @@
       <div class="col-md-4">
         <input type="text" name="nombre" th:value="${nombre}" placeholder="Buscar por nombre" class="form-control">
       </div>
+
       <div class="col-md-4">
         <select name="categoria" class="form-select">
-          <option value="" disabled selected>Seleccione categoría</option>
-          <option th:each="cat : ${categories}" th:value="${cat}" th:text="${cat}"
-                  th:selected="${cat == categoria}"></option>
+          <option th:value="''" th:selected="${categoria == null or categoria == ''}">Todas</option>
+
+          <option th:each="cat : ${categories}"
+                  th:value="${cat.name()}"
+                  th:text="${cat}"
+                  th:selected="${cat.name() == categoria}">
+          </option>
         </select>
       </div>
+
       <div class="col-md-4">
         <button class="btn btn-primary w-100">Buscar</button>
       </div>
     </form>
+
 
     <table class="table table-bordered table-hover">
       <thead class="table-dark">
@@ -61,9 +68,6 @@
       <a th:href="@{/productos/create}" class="btn btn-outline-success">
         + Nuevo Producto
       </a>
-<!--      <a th:href="@{/productos/stock-control}" class="btn btn-outline-primary">-->
-<!--        Ir al Control de Stock-->
-<!--      </a>-->
     </div>
 
   </div>

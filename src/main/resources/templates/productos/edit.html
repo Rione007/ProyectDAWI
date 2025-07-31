@@ -23,8 +23,14 @@
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label fw-semibold">Categoría:</label>
-                        <input type="text" class="form-control" th:field="*{category}" required>
+                        <label class="form-label">Categoría:</label>
+                        <select class="form-select" th:field="*{category}" required>
+                            <option value="" disabled selected>Seleccione categoría</option>
+                            <option th:each="cat : ${categories}"
+                                    th:value="${cat}"
+                                    th:text="${cat}">
+                            </option>
+                        </select>
                     </div>
 
                     <div class="mb-3">
