@@ -22,19 +22,19 @@ public class ProductController {
     @GetMapping("/catalogo")
     public String catalog(
             @RequestParam(required = false) String nombre,
-            @RequestParam(required = false) Category categoria,
+            @RequestParam(required = false) String categoria,
             Model model) {
 
         List<Product> productos;
 
-        if ((nombre == null || nombre.isEmpty()) && (categoria == null)) {
+        if ((nombre == null || nombre.isEmpty()) && (categoria == null || categoria.isEmpty())) {
             productos = productService.findAll();
-        } else if (nombre != null && !nombre.isEmpty() && categoria == null) {
+        } else if (nombre != null && !nombre.isEmpty() && (categoria == null || categoria.isEmpty())) {
             productos = productService.searchByName(nombre);
-        } else if ((nombre == null || nombre.isEmpty()) && categoria != null) {
-            productos = productService.findByCategory(categoria);
+        } else if ((nombre == null || nombre.isEmpty()) && categoria != null && !categoria.isEmpty()) {
+            productos = productService.findByCategory(Category.valueOf(categoria));
         } else {
-            productos = productService.findByNameContainingAndCategory(nombre, categoria);
+            productos = productService.findByNameContainingAndCategory(nombre, Category.valueOf(categoria));
         }
 
         model.addAttribute("products", productos);
@@ -45,12 +45,33 @@ public class ProductController {
         return "productos/catalogo";
     }
 
+
     @GetMapping("/stock-control")
-    public String stockControl(Model model) {
-        List<Product> lowStockProducts = productService.findByStockLessThanEqual(14);
-        model.addAttribute("products", lowStockProducts);
+    public String stockControl(
+            @RequestParam(required = false) String nombre,
+            @RequestParam(required = false) String categoria,
+            Model model) {
+
+        List<Product> productos;
+
+        if ((nombre == null || nombre.isEmpty()) && (categoria == null || categoria.isEmpty())) {
+            productos = productService.findByStockLessThanEqual(14);
+        } else if (nombre != null && !nombre.isEmpty() && (categoria == null || categoria.isEmpty())) {
+            productos = productService.searchByName(nombre);
+        } else if ((nombre == null || nombre.isEmpty()) && categoria != null && !categoria.isEmpty()) {
+            productos = productService.findByCategory(Category.valueOf(categoria));
+        } else {
+            productos = productService.findByNameContainingAndCategory(nombre, Category.valueOf(categoria));
+        }
+
+        model.addAttribute("products", productos);
+        model.addAttribute("categories", Category.values());
+        model.addAttribute("nombre", nombre);
+        model.addAttribute("categoria", categoria);
+
         return "productos/stock-control";
     }
+
 
     @PostMapping("/adjust-stock")
     public String adjustStock(@RequestParam Long id, @RequestParam int stock) {

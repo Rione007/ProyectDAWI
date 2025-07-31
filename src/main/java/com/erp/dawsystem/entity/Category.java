@@ -1,8 +1,8 @@
 package com.erp.dawsystem.entity;
 
 public enum Category {
-    ELECTRONICA,
-    ROPA,
-    ALIMENTOS,
-    HOGAR
+    ELECTRODOMESTICOS,
+    DISPOSITIVOS_DE_CUIDADO_PERSONAL,
+    DISPOSITIVOS_DE_COMUNICACION,
+    DISPOSITIVOS_MEDICOS
 }
