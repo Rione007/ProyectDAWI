@@ -74,5 +74,15 @@ public class UserServiceImpl implements UserService {
         return userRepository.existsByUsername(username);
     }
 
+    @Override
+    public void cambiarPassword(String username, String nuevaPassword) {
+        Optional<User> userOpt = userRepository.findByUsername(username);
+        if (userOpt.isPresent()) {
+            User user = userOpt.get();
+            user.setPassword(passwordEncoder.encode(nuevaPassword));
+            userRepository.save(user);
+        }
+    }
+
 
 }
