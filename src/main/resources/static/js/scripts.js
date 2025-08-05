@@ -133,6 +133,149 @@ document.querySelectorAll('.btn-eliminar').forEach(function(btn) {
         }
     });
 
+    //JS PARA VENTA:
+
+    //filtrar datos en ventas
+
+document.addEventListener("DOMContentLoaded", () => {
+    // --- Filtro dinámico para CLIENTES ---
+    const clientSearch = document.getElementById("buscarCliente");
+    const clientSelect = document.getElementById("cliente");
+
+    if (clientSearch) {
+        clientSearch.addEventListener("input", () => {
+            const nombre = clientSearch.value.trim();
+
+            if (nombre.length >= 2) { // Buscar desde 2 letras
+                fetch(`/clientes/buscar?nombre=${encodeURIComponent(nombre)}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        clientSelect.innerHTML = '<option value="">Seleccione un cliente</option>';
+                        data.forEach(c => {
+                            clientSelect.innerHTML += `<option value="${c.id}">${c.name}</option>`;
+                        });
+                    })
+                    .catch(error => console.error("Error al buscar clientes:", error));
+            } else {
+                clientSelect.innerHTML = '<option value="">Seleccione un cliente</option>';
+            }
+        });
+    }
+
+    // --- Filtro dinámico para PRODUCTOS ---
+    const productSearch = document.getElementById("buscarProducto");
+    const productSelect = document.getElementById("producto");
+
+    if (productSearch) {
+        productSearch.addEventListener("input", () => {
+            const nombre = productSearch.value.trim();
+
+            if (nombre.length >= 2) {
+                fetch(`/productos/buscar?nombre=${encodeURIComponent(nombre)}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        productSelect.innerHTML = '<option value="">Seleccione un producto</option>';
+                        data.forEach(p => {
+                            productSelect.innerHTML += `<option value="${p.id}" data-precio="${p.price}">${p.name}</option>`;
+                        });
+                    })
+                    .catch(error => console.error("Error al buscar productos:", error));
+            } else {
+                productSelect.innerHTML = '<option value="">Seleccione un producto</option>';
+            }
+        });
+    }
+});
+
+//manejar carrito
+let total = 0;
+
+document.addEventListener("DOMContentLoaded", () => {
+    const btnAgregar = document.getElementById("btnAgregar");
+    const tablaDetalle = document.querySelector("#tablaDetalle tbody");
+    const totalVenta = document.getElementById("totalVenta");
+
+    btnAgregar.addEventListener("click", () => {
+        const productoSelect = document.getElementById("producto");
+        const cantidadInput = document.getElementById("cantidad");
+
+        const productoId = productoSelect.value;
+        const productoNombre = productoSelect.options[productoSelect.selectedIndex].text;
+        const precio = parseFloat(productoSelect.options[productoSelect.selectedIndex].dataset.precio);
+        const cantidad = parseInt(cantidadInput.value);
+
+        if (!productoId) {
+            alert("Seleccione un producto");
+            return;
+        }
+
+        const subtotal = precio * cantidad;
+        total += subtotal;
+
+        const fila = document.createElement("tr");
+        fila.dataset.productId = productoId;
+        fila.innerHTML = `
+            <td>${productoNombre}</td>
+            <td class="cantidad">${cantidad}</td>
+            <td class="precio">S/ ${precio}</td>
+            <td>S/ ${subtotal}</td>
+            <td><button class="btn btn-danger btn-sm eliminar">X</button></td>
+        `;
+
+        tablaDetalle.appendChild(fila);
+        totalVenta.textContent = total;
+
+        fila.querySelector(".eliminar").addEventListener("click", () => {
+            total -= subtotal;
+            totalVenta.textContent = total;
+            fila.remove();
+        });
+
+        // reset campos
+        productoSelect.selectedIndex = 0;
+        cantidadInput.value = 1;
+    });
+
+    // Confirmar venta
+    document.getElementById("btnConfirmarVenta").addEventListener("click", () => {
+        const clienteId = document.getElementById("cliente").value;
+        const fecha = document.getElementById("fecha").value;
+
+        if (!clienteId || tablaDetalle.children.length === 0) {
+            alert("Debe seleccionar cliente y al menos un producto");
+            return;
+        }
+
+        const productIds = [];
+        const quantities = [];
+        const prices = [];
+
+        document.querySelectorAll("#tablaDetalle tbody tr").forEach(row => {
+            productIds.push(row.dataset.productId);
+            quantities.push(row.querySelector(".cantidad").textContent);
+            prices.push(row.querySelector(".precio").textContent.replace("S/ ", ""));
+        });
+
+        const formData = new URLSearchParams();
+        formData.append("clientId", clienteId);
+        formData.append("date", fecha);
+        productIds.forEach(id => formData.append("productIds", id));
+        quantities.forEach(q => formData.append("quantities", q));
+        prices.forEach(p => formData.append("prices", p));
+
+        fetch("/ventas/guardar", {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: formData.toString()
+        })
+        .then(res => res.text())
+        .then(msg => {
+            alert(msg);
+            window.location.href = "/ventas/listado";
+        });
+    });
+});
+//fin de venta
 
 
 

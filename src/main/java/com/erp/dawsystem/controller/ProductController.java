@@ -126,5 +126,12 @@ public class ProductController {
         return "redirect:/productos/catalogo";
     }
 
+    // Buscar productos por nombre
+    @GetMapping("/buscar")
+    @ResponseBody
+    public List<Product> buscarProductos(@RequestParam String nombre) {
+        return productService.searchByName(nombre);
+    }
+
 }
 

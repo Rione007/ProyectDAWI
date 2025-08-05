@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout}">
@@ -15,21 +16,24 @@
                 <i class="fas fa-filter me-1"></i> Filtros
             </div>
             <div class="card-body">
-                <form class="row g-3">
+                <form method="get" action="/ventas/listado" class="row g-3">
                     <div class="col-md-3">
                         <label for="fechaInicio" class="form-label">Desde</label>
-                        <input type="date" id="fechaInicio" class="form-control">
+                        <input type="date" id="fechaInicio" name="fechaInicio" class="form-control"
+                               th:value="${fechaInicio}">
                     </div>
                     <div class="col-md-3">
                         <label for="fechaFin" class="form-label">Hasta</label>
-                        <input type="date" id="fechaFin" class="form-control">
+                        <input type="date" id="fechaFin" name="fechaFin" class="form-control"
+                               th:value="${fechaFin}">
                     </div>
                     <div class="col-md-4">
                         <label for="cliente" class="form-label">Cliente</label>
-                        <input type="text" id="cliente" class="form-control" placeholder="Buscar cliente...">
+                        <input type="text" id="cliente" name="cliente" class="form-control"
+                               th:value="${cliente}" placeholder="Buscar cliente...">
                     </div>
                     <div class="col-md-2 align-self-end">
-                        <button type="button" class="btn btn-primary w-100">Buscar</button>
+                        <button type="submit" class="btn btn-primary w-100">Buscar</button>
                     </div>
                 </form>
             </div>
@@ -62,27 +66,27 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>23/07/2025</td>
-                        <td>Juan Pérez</td>
-                        <td>S/ 150</td>
+                    <!-- Si hay ventas -->
+                    <tr th:each="venta, stat : ${ventas}">
+                        <td th:text="${stat.index + 1}"></td>
+                        <td th:text="${venta.date}"></td>
+                        <td th:text="${venta.client.name}"></td>
+                        <td>S/ <span th:text="${venta.total}"></span></td>
                         <td>
-                            <a href="#" class="btn btn-sm btn-info"><i class="fas fa-eye"></i> Detalle</a>
-                            <a href="#" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i> Editar</a>
-                            <a href="#" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i> Eliminar</a>
+                            <a th:href="@{'/ventas/detalle/' + ${venta.id}}" class="btn btn-sm btn-info">
+                                <i class="fas fa-eye"></i> Detalle
+                            </a>
+                            <a href="#" class="btn btn-sm btn-warning disabled">
+                                <i class="fas fa-edit"></i> Editar
+                            </a>
+                            <a href="#" class="btn btn-sm btn-danger disabled">
+                                <i class="fas fa-trash"></i> Eliminar
+                            </a>
                         </td>
                     </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>22/07/2025</td>
-                        <td>María López</td>
-                        <td>S/ 200</td>
-                        <td>
-                            <a href="#" class="btn btn-sm btn-info"><i class="fas fa-eye"></i> Detalle</a>
-                            <a href="#" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i> Editar</a>
-                            <a href="#" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i> Eliminar</a>
-                        </td>
+                    <!-- Si no hay ventas -->
+                    <tr th:if="${#lists.isEmpty(ventas)}">
+                        <td colspan="5" class="text-center">No hay ventas registradas</td>
                     </tr>
                     </tbody>
                 </table>

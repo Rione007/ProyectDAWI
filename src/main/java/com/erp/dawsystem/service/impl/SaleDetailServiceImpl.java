@@ -4,10 +4,12 @@ import com.erp.dawsystem.entity.SaleDetail;
 import com.erp.dawsystem.repository.SaleDetailRepository;
 import com.erp.dawsystem.service.interfaces.SaleDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class SaleDetailServiceImpl implements SaleDetailService {
     @Autowired
     private SaleDetailRepository saleDetailRepository;

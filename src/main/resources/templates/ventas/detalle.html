@@ -1,10 +1,58 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+
+<section layout:fragment="content">
+  <div class="container mt-4">
+    <h1>Detalle de Venta</h1>
+    <ol class="breadcrumb mb-4">
+      <li class="breadcrumb-item"><a href="/ventas/listado">Ventas</a></li>
+      <li class="breadcrumb-item active">Detalle</li>
+    </ol>
+
+    <!-- Datos generales -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <strong>Datos de la venta</strong>
+      </div>
+      <div class="card-body">
+        <p><strong>Cliente:</strong> <span th:text="${venta.client.name}"></span></p>
+        <p><strong>Fecha:</strong> <span th:text="${venta.date}"></span></p>
+        <p><strong>Total:</strong> S/ <span th:text="${venta.total}"></span></p>
+      </div>
+    </div>
+
+    <!-- Detalle productos -->
+    <div class="card">
+      <div class="card-header">
+        <strong>Productos vendidos</strong>
+      </div>
+      <div class="card-body">
+        <table class="table table-bordered">
+          <thead class="table-dark">
+          <tr>
+            <th>Producto</th>
+            <th>Cantidad</th>
+            <th>Precio Unitario</th>
+            <th>Subtotal</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr th:each="detalle : ${detalles}">
+            <td th:text="${detalle.product.name}"></td>
+            <td th:text="${detalle.quantity}"></td>
+            <td>S/ <span th:text="${detalle.unitPrice}"></span></td>
+            <td>S/ <span th:text="${detalle.subtotal}"></span></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="mt-3">
+      <a href="/ventas/listado" class="btn btn-secondary">Volver</a>
+    </div>
+  </div>
+</section>
 </html>

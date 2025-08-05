@@ -60,6 +60,10 @@ public class SaleDetail {
         updateSubtotal();
     }
 
+    public void setSubtotal(BigDecimal subtotal) {
+        this.subtotal = subtotal;
+    }
+
     public BigDecimal getSubtotal() { return subtotal; }
 
     private void updateSubtotal() {
