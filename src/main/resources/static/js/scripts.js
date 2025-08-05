@@ -278,4 +278,27 @@ document.addEventListener("DOMContentLoaded", () => {
 //fin de venta
 
 
+//JS cliente
+
+setTimeout(function () {
+    var alerta = document.getElementById('alerta-exito2');
+    if (alerta) {
+        alerta.classList.remove('show');
+        alerta.classList.add('fade');
+        alerta.style.display = 'none';
+    }
+}, 4000);
+
+    document.addEventListener("DOMContentLoaded", () => {
+        document.querySelectorAll(".btn-eliminar-client").forEach(btn => {
+            btn.addEventListener("click", e => {
+                const nombre = btn.getAttribute("data-nombre");
+                if (!confirm(`¿Estás seguro de eliminar al cliente "${nombre}"?`)) {
+                    e.preventDefault();
+                }
+            });
+        });
+    });
+
+
 
