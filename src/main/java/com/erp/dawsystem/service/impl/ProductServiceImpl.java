@@ -76,5 +76,11 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.findByNameContainingAndCategory(name, category);
     }
 
+    @Override
+    public int countProductosStockBajo() {
+        return findByStockLessThanEqual(15).size();
+    }
+
+
 
 }

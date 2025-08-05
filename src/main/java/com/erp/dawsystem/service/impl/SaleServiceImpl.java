@@ -59,9 +59,35 @@ public class SaleServiceImpl implements SaleService {
         return saleRepository.findByClientNameContainingIgnoreCase(name);
     }
 
+
     @Override
-    public Double getTotalSalesByDate(LocalDate date) {
-        Double total = saleRepository.getTotalSalesByDate(date);
+    public double getTotalVentasHoy() {
+        LocalDate today = LocalDate.now();
+        Double total = saleRepository.getTotalSalesByDate(today);
         return total != null ? total : 0.0;
     }
+
+    @Override
+    public double getTotalVentasMes() {
+        LocalDate startOfMonth = LocalDate.now().withDayOfMonth(1);
+        LocalDate endOfMonth = LocalDate.now().withDayOfMonth(LocalDate.now().lengthOfMonth());
+        Double total = saleRepository.getTotalSalesBetweenDates(startOfMonth, endOfMonth);
+        return total != null ? total : 0.0;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

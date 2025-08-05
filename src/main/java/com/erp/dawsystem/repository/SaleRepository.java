@@ -24,4 +24,9 @@ public interface SaleRepository extends JpaRepository<Sale, Long> {
     Double getTotalSalesByDate(@Param("date") LocalDate date);
 
 
+
+    @Query("SELECT SUM(s.total) FROM Sale s WHERE s.date BETWEEN :startDate AND :endDate")
+    Double getTotalSalesBetweenDates(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
+
+
 }

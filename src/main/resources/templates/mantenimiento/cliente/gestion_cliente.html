@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+
+<section layout:fragment="content">
+    <div class="container-fluid px-4">
+        <h1 class="mt-4">Gestión de Clientes</h1>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item active">Listado de clientes</li>
+        </ol>
+
+        <!-- ✅ Alerta de éxito -->
+        <div th:if="${mensaje != null and mensaje != ''}"
+             class="alert alert-success alert-dismissible fade show"
+             role="alert"
+             id="alerta-exito2">
+            <span th:text="${mensaje}">Mensaje de éxito</span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+        </div>
+
+        <!-- 🔍 Filtro por nombre -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <i class="fas fa-filter me-1"></i> Filtros
+            </div>
+            <div class="card-body">
+                <form class="row g-3" th:action="@{/clientes/gestion_cliente}" method="get">
+                    <div class="col-md-10">
+                        <label for="filtro" class="form-label">Nombre</label>
+                        <input type="text" id="filtro" name="filtro" th:value="${filtro}" class="form-control" placeholder="Buscar por nombre...">
+                    </div>
+                    <div class="col-md-2 align-self-end">
+                        <button type="submit" class="btn btn-primary w-100">Buscar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Botón nuevo cliente -->
+        <div class="mb-3 d-flex justify-content-between">
+            <a th:href="@{/clientes/nuevo}" class="btn btn-success mb-3">
+                <i class="fas fa-plus"></i> Nuevo Cliente
+            </a>
+        </div>
+
+        <!-- Tabla de clientes -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <i class="fas fa-users me-1"></i> Clientes Registrados
+            </div>
+            <div class="card-body">
+                <table class="table table-bordered table-striped">
+                    <thead class="table-dark">
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Email</th>
+                        <th>Teléfono</th>
+                        <th>Dirección</th>
+                        <th>Acciones</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="c : ${clientes}">
+                        <td th:text="${c.name}">Juan Pérez</td>
+                        <td th:text="${c.email}">juan@example.com</td>
+                        <td th:text="${c.phone}">999999999</td>
+                        <td th:text="${c.address}">Av. Falsa 123</td>
+                        <td>
+                            <a th:href="@{/clientes/editar/{id}(id=${c.id})}" class="btn btn-sm btn-warning">
+                                <i class="fas fa-edit"></i> Editar
+                            </a>
+                            <a th:href="@{/clientes/eliminar/{id}(id=${c.id})}"
+                               class="btn btn-sm btn-danger btn-eliminar-client"
+                               th:attr="data-nombre=${c.name}">
+                                <i class="fas fa-trash"></i> Eliminar
+                            </a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+</html>

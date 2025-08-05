@@ -27,4 +27,6 @@ public interface ClientService {
 
     // Verificar duplicado de email
     boolean existsByEmail(String email);
+
+    int countClientes();
 }
