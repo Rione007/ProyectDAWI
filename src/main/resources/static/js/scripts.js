@@ -302,3 +302,20 @@ setTimeout(function () {
 
 
 
+    function actualizarKPIs() {
+        fetch('/dashboard/data')
+            .then(response => response.json())
+            .then(data => {
+                document.querySelector('#ventasHoy').textContent = 'Ventas de Hoy: S/ ' + data.ventasHoy.toFixed(2);
+                document.querySelector('#stockBajo').textContent = 'Stock Bajo: ' + data.stockBajo + ' Productos';
+                document.querySelector('#totalClientes').textContent = 'Clientes Registrados: ' + data.totalClientes;
+                document.querySelector('#ventasMes').textContent = 'Ventas del Mes: S/ ' + data.ventasMes.toFixed(2);
+            });
+    }
+
+    // Actualizar cada 10 segundos (10000 ms)
+    setInterval(actualizarKPIs, 10000);
+
+    // Cargar al inicio
+    actualizarKPIs();
+

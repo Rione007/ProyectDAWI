@@ -14,6 +14,9 @@ public interface ProductService{
     void update(Product product); //Actualizar datos de un producto
     void delete(Long id); //Eliminar
 
+    int countProductosStockBajo();
+
+
 
     List<Product> findByCategory(Category category); //Filtrar por categoria
     List<Product> searchByName(String name); //Búsqueda por nombre(contiene)

@@ -68,4 +68,17 @@ public class ClientServiceImpl implements ClientService {
     public boolean existsByEmail(String email) {
         return clientRepository.existsByEmail(email);
     }
+
+
+
+
+    @Override
+    public int countClientes() {
+        return (int) clientRepository.count();
+    }
+
+
+
+
+
 }
