@@ -1,5 +1,11 @@
 package com.erp.dawsystem.controller;
 
+import org.springframework.web.bind.annotation.ResponseBody;
+import java.util.Map;
+import java.util.HashMap;
+
+
+
 import com.erp.dawsystem.service.interfaces.ClientService;
 import com.erp.dawsystem.service.interfaces.ProductService;
 import com.erp.dawsystem.service.interfaces.SaleService;
@@ -35,6 +41,21 @@ public class DashboardController {
 
         return "index";
     }
-    
+
+
+    @GetMapping("/dashboard/data")
+    @ResponseBody
+    public Map<String, Object> getDashboardData() {
+        Map<String, Object> data = new HashMap<>();
+        data.put("ventasHoy", saleService.getTotalVentasHoy());
+        data.put("ventasMes", saleService.getTotalVentasMes());
+        data.put("stockBajo", productService.countProductosStockBajo());
+        data.put("totalClientes", clientService.countClientes());
+        return data;
+    }
+
+
+
+
 
 }
