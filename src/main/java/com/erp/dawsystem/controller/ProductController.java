@@ -74,10 +74,18 @@ public class ProductController {
 
 
     @PostMapping("/adjust-stock")
-    public String adjustStock(@RequestParam Long id, @RequestParam int stock) {
-        productService.adjustStock(id, stock);
+    public String adjustStock(@RequestParam Long id, @RequestParam int cantidad) {
+        Product producto = productService.findById(id);
+
+        if (producto != null) {
+            int nuevoStock = producto.getStock() + cantidad;
+            producto.setStock(nuevoStock);
+            productService.save(producto);
+        }
+
         return "redirect:/productos/stock-control";
     }
+
 
     @GetMapping("/detail/{id}")
     public String detalle(@PathVariable Long id, Model model) {
