@@ -98,23 +98,6 @@
             </form>
         </div>
     </div>
-
-    <!-- Scripts -->
-    <script>
-        const stockModal = document.getElementById('stockModal');
-
-        stockModal.addEventListener('show.bs.modal', event => {
-          const button = event.relatedTarget;
-          const productName = button.getAttribute('data-product-name');
-          const productId = button.getAttribute('data-product-id');
-
-          const modalProductName = stockModal.querySelector('#modalProductName');
-          const modalProductIdInput = stockModal.querySelector('#modalProductId');
-
-          modalProductName.textContent = productName;
-          modalProductIdInput.value = productId;
-          stockModal.querySelector('#newStock').value = '';
-        });
-    </script>
+    <script th:src="@{/js/scripts.js}"></script>
 </section>
 </html>

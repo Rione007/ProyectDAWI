@@ -7,8 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class SaleServiceImpl implements SaleService {
@@ -74,6 +73,23 @@ public class SaleServiceImpl implements SaleService {
         Double total = saleRepository.getTotalSalesBetweenDates(startOfMonth, endOfMonth);
         return total != null ? total : 0.0;
     }
+
+    @Override
+    public List<Map<String, Object>> getUltimas5Ventas() {
+        List<Sale> ultimas = saleRepository.findTop5ByOrderByDateDesc();
+        List<Map<String, Object>> resultado = new ArrayList<>();
+
+        for (Sale sale : ultimas) {
+            Map<String, Object> item = new HashMap<>();
+            item.put("cliente", sale.getClient().getName());
+            item.put("monto", sale.getTotal());
+            item.put("fecha", sale.getDate().toString());
+            resultado.add(item);
+        }
+
+        return resultado;
+    }
+
 
 
 

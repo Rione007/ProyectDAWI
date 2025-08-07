@@ -20,6 +20,10 @@ public interface SaleRepository extends JpaRepository<Sale, Long> {
 
     List<Sale> findByClientNameContainingIgnoreCase(String name);
 
+    List<Sale> findTop5ByOrderByDateDesc();
+
+
+
     @Query("SELECT SUM(s.total) FROM Sale s WHERE s.date = :date")
     Double getTotalSalesByDate(@Param("date") LocalDate date);
 

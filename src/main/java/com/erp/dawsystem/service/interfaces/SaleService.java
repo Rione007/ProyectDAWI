@@ -4,6 +4,7 @@ import com.erp.dawsystem.entity.Sale;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 
 public interface SaleService {
@@ -18,6 +19,8 @@ public interface SaleService {
     List<Sale> findByClientId(Long clientId);
     List<Sale> findByDateBetween(LocalDate startDate, LocalDate endDate);
     List<Sale> searchByClientName(String name);
+    List<Map<String, Object>> getUltimas5Ventas();
+
 
 
 

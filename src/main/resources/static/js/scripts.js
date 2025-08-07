@@ -319,3 +319,67 @@ setTimeout(function () {
     // Cargar al inicio
     actualizarKPIs();
 
+   //Script Stock-Control
+    document.addEventListener('DOMContentLoaded', function () {
+        const stockModal = document.getElementById('stockModal');
+
+        if (stockModal) {
+            stockModal.addEventListener('show.bs.modal', event => {
+                const button = event.relatedTarget;
+                const productName = button.getAttribute('data-product-name');
+                const productId = button.getAttribute('data-product-id');
+
+                const modalProductName = stockModal.querySelector('#modalProductName');
+                const modalProductIdInput = stockModal.querySelector('#modalProductId');
+
+                modalProductName.textContent = productName;
+                modalProductIdInput.value = productId;
+                stockModal.querySelector('#newStock').value = '';
+            });
+        }
+    });
+
+    //Script DashBoard
+    async function cargarUltimasVentas() {
+        try {
+            const response = await fetch('/dashboard/ultimas-ventas');
+            const ventas = await response.json();
+
+            const tbody = document.getElementById('ultimasVentasBody');
+            if (!tbody) return; // Prevención si el elemento no existe en alguna vista
+
+            tbody.innerHTML = ''; // Limpiar el contenido actual
+
+            ventas.forEach((venta, index) => {
+                const fila = `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td>${formatearFecha(venta.fecha)}</td>
+                        <td>${venta.cliente}</td>
+                        <td>S/ ${venta.monto}</td>
+                        <td><a href="#" class="btn btn-sm btn-primary">Ver</a></td>
+                    </tr>
+                `;
+                tbody.innerHTML += fila;
+            });
+        } catch (error) {
+            console.error('Error cargando las últimas ventas:', error);
+        }
+    }
+
+   function formatearFecha(fechaLocal) {
+       const [anio, mes, dia] = fechaLocal.split('-');
+       return `${dia}/${mes}/${anio}`;
+   }
+
+
+    // Llamar al cargar la página y cada 30 segundos
+    document.addEventListener('DOMContentLoaded', () => {
+        cargarUltimasVentas();
+        setInterval(cargarUltimasVentas, 30000);
+    });
+
+
+
+
+
