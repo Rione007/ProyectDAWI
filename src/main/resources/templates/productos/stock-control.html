@@ -56,10 +56,10 @@
                             class="btn btn-sm btn-warning"
                             data-bs-toggle="modal"
                             data-bs-target="#stockModal"
-                            th:attr="data-product-id=${prod.id}, data-product-name=${prod.name}, data-product-stock=${prod.stock}">
-                        Ajustar Stock
+                            th:data-product-name="${prod.name}"
+                            th:data-product-id="${prod.id}"><i class="fas fa-edit"></i>
+                        Ajustar
                     </button>
-
                 </td>
             </tr>
             </tbody>
@@ -98,23 +98,6 @@
             </form>
         </div>
     </div>
-
-    <!-- Scripts -->
-    <script>
-        const stockModal = document.getElementById('stockModal');
-
-        stockModal.addEventListener('show.bs.modal', event => {
-          const button = event.relatedTarget;
-          const productName = button.getAttribute('data-product-name');
-          const productId = button.getAttribute('data-product-id');
-
-          const modalProductName = stockModal.querySelector('#modalProductName');
-          const modalProductIdInput = stockModal.querySelector('#modalProductId');
-
-          modalProductName.textContent = productName;
-          modalProductIdInput.value = productId;
-          stockModal.querySelector('#newStock').value = '';
-        });
-    </script>
+    <script th:src="@{/js/scripts.js}"></script>
 </section>
 </html>
