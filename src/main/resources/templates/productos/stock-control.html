@@ -86,8 +86,10 @@
                         <p>Producto: <span id="modalProductName"></span></p>
 
                         <div class="mb-3">
-                            <label for="newStock" class="form-label">Nuevo stock:</label>
-                            <input type="number" class="form-control" id="newStock" name="stock" required min="0">
+                            <label class="form-label">Stock actual:</label>
+                            <input type="number" class="form-control" id="currentStock" readonly>
+                            <label for="newStock" class="form-label">Cantidad a agregar:</label>
+                            <input type="number" class="form-control" id="newStock" name="cantidad" required min="0">
                         </div>
                     </div>
                     <div class="modal-footer">
