@@ -52,11 +52,12 @@
         <td th:text="${product.price}">Precio</td>
         <td th:text="${product.stock}">Stock</td>
         <td>
-          <a th:href="@{/productos/detail/{id}(id=${product.id})}" class="btn btn-sm btn-info">Detalle</a>
-          <a th:href="@{/productos/edit/{id}(id=${product.id})}" class="btn btn-sm btn-warning">Editar</a>
+          <a th:href="@{/productos/detail/{id}(id=${product.id})}" class="btn btn-sm btn-info"><i class="fas fa-eye"></i>
+            Detalle</a>
+          <a th:href="@{/productos/edit/{id}(id=${product.id})}" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i>Editar</a>
           <a th:href="@{/productos/delete/{id}(id=${product.id})}"
              class="btn btn-sm btn-danger"
-             onclick="return confirm('¿Estás seguro de eliminar este producto?');">
+             onclick="return confirm('¿Estás seguro de eliminar este producto?');"><i class="fas fa-trash"></i>
             Eliminar
           </a>
         </td>

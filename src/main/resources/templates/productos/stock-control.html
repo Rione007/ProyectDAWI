@@ -56,9 +56,8 @@
                             class="btn btn-sm btn-warning"
                             data-bs-toggle="modal"
                             data-bs-target="#stockModal"
-                            th:data-product-name="${prod.name}"
-                            th:data-product-id="${prod.id}">
-                        Ajustar
+                            th:attr="data-product-id=${prod.id}, data-product-name=${prod.name}, data-product-stock=${prod.stock}">
+                        Ajustar Stock
                     </button>
                 </td>
             </tr>
@@ -86,8 +85,10 @@
                         <p>Producto: <span id="modalProductName"></span></p>
 
                         <div class="mb-3">
-                            <label for="newStock" class="form-label">Nuevo stock:</label>
-                            <input type="number" class="form-control" id="newStock" name="stock" required min="0">
+                            <label class="form-label">Stock actual:</label>
+                            <input type="number" class="form-control" id="currentStock" readonly>
+                            <label for="newStock" class="form-label">Cantidad a agregar:</label>
+                            <input type="number" class="form-control" id="newStock" name="cantidad" required min="0">
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -98,23 +99,5 @@
             </form>
         </div>
     </div>
-
-    <!-- Scripts -->
-    <script>
-        const stockModal = document.getElementById('stockModal');
-
-        stockModal.addEventListener('show.bs.modal', event => {
-          const button = event.relatedTarget;
-          const productName = button.getAttribute('data-product-name');
-          const productId = button.getAttribute('data-product-id');
-
-          const modalProductName = stockModal.querySelector('#modalProductName');
-          const modalProductIdInput = stockModal.querySelector('#modalProductId');
-
-          modalProductName.textContent = productName;
-          modalProductIdInput.value = productId;
-          stockModal.querySelector('#newStock').value = '';
-        });
-    </script>
 </section>
 </html>
