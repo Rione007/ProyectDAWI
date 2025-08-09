@@ -94,4 +94,13 @@ public class ClientController {
     public List<Client> buscarClientes(@RequestParam String nombre) {
         return clientService.searchByName(nombre);
     }
+
+    // 👉 Obtener un cliente por ID -- nuevo metodo
+    @GetMapping("/{id}")
+    @ResponseBody
+    public Client obtenerClientePorId(@PathVariable Long id) {
+        return clientService.findById(id)
+                .orElseThrow(() -> new RuntimeException("Cliente no encontrado"));
+    }
+
 }
