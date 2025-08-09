@@ -67,8 +67,8 @@
                     </thead>
                     <tbody>
                     <!-- Si hay ventas -->
-                    <tr th:each="venta, stat : ${ventas}">
-                        <td th:text="${stat.index + 1}"></td>
+                    <tr th:each="venta, stat : ${ventas.content}">
+                        <td th:text="${stat.index + 1 + ventas.number * ventas.size}"></td>
                         <td th:text="${venta.date}"></td>
                         <td th:text="${venta.client.name}"></td>
                         <td>S/ <span th:text="${venta.total}"></span></td>
@@ -85,14 +85,31 @@
                         </td>
                     </tr>
                     <!-- Si no hay ventas -->
-                    <tr th:if="${#lists.isEmpty(ventas)}">
+                    <tr th:if="${#lists.isEmpty(ventas.content)}">
                         <td colspan="5" class="text-center">No hay ventas registradas</td>
                     </tr>
                     </tbody>
                 </table>
+
+                <!-- 🔄 Paginación -->
+                <nav th:if="${ventas.totalPages > 1}" aria-label="Paginacion">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item" th:classappend="${ventas.first} ? 'disabled'">
+                            <a class="page-link" th:href="@{/ventas/listado(fechaInicio=${fechaInicio},fechaFin=${fechaFin},cliente=${cliente},page=${ventas.number - 1},size=${ventas.size})}">Anterior</a>
+                        </li>
+                        <li class="page-item" th:each="i : ${#numbers.sequence(0, ventas.totalPages - 1)}"
+                            th:classappend="${i == ventas.number} ? 'active'">
+                            <a class="page-link" th:href="@{/ventas/listado(fechaInicio=${fechaInicio},fechaFin=${fechaFin},cliente=${cliente},page=${i},size=${ventas.size})}" th:text="${i + 1}"></a>
+                        </li>
+                        <li class="page-item" th:classappend="${ventas.last} ? 'disabled'">
+                            <a class="page-link" th:href="@{/ventas/listado(fechaInicio=${fechaInicio},fechaFin=${fechaFin},cliente=${cliente},page=${ventas.number + 1},size=${ventas.size})}">Siguiente</a>
+                        </li>
+                    </ul>
+                </nav>
+                <!-- Fin de paginacion -->
+
             </div>
         </div>
-
     </div>
 </section>
 </html>

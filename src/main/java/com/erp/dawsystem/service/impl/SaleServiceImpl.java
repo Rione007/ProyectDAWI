@@ -10,6 +10,10 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
+
 @Service
 public class SaleServiceImpl implements SaleService {
 
@@ -50,13 +54,18 @@ public class SaleServiceImpl implements SaleService {
     }
 
     @Override
-    public List<Sale> findByDateBetween(LocalDate startDate, LocalDate endDate) {
-        return saleRepository.findByDateBetween(startDate, endDate);
+    public Page<Sale> findAll(Pageable pageable) {
+        return saleRepository.findAll(pageable);
     }
 
     @Override
-    public List<Sale> searchByClientName(String name) {
-        return saleRepository.findByClientNameContainingIgnoreCase(name);
+    public Page<Sale> findByDateBetween(LocalDate startDate, LocalDate endDate, Pageable pageable) {
+        return saleRepository.findByDateBetween(startDate, endDate, pageable);
+    }
+
+    @Override
+    public Page<Sale> searchByClientName(String name, Pageable pageable) {
+        return saleRepository.findByClientNameContainingIgnoreCase(name, pageable);
     }
 
 

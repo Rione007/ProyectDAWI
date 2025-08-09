@@ -8,6 +8,10 @@ import com.erp.dawsystem.service.interfaces.ClientService;
 import com.erp.dawsystem.service.interfaces.ProductService;
 import com.erp.dawsystem.service.interfaces.SaleDetailService;
 import com.erp.dawsystem.service.interfaces.SaleService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -37,11 +41,13 @@ public class VentaController {
         this.saleDetailService = saleDetailService;
     }
 
+    // Vista para crear una nueva venta
     @GetMapping("/nueva")
     public String nuevaVenta() {
         return "ventas/nuevaVenta";
     }
 
+    // Guardar venta desde formulario (AJAX)
     @PostMapping("/guardar")
     @ResponseBody
     public String guardarVenta(
@@ -51,11 +57,9 @@ public class VentaController {
             @RequestParam List<Integer> quantities,
             @RequestParam List<BigDecimal> prices) {
 
-        // 1. Buscar cliente
         Client cliente = clientService.findById(clientId)
                 .orElseThrow(() -> new RuntimeException("Cliente no encontrado"));
 
-        // 2. Crear la venta
         Sale venta = new Sale();
         venta.setClient(cliente);
         venta.setDate(LocalDate.parse(date));
@@ -63,7 +67,6 @@ public class VentaController {
         List<SaleDetail> detalles = new ArrayList<>();
         BigDecimal total = BigDecimal.ZERO;
 
-        // 3. Crear detalles
         for (int i = 0; i < productIds.size(); i++) {
             Long productId = productIds.get(i);
             int cantidad = quantities.get(i);
@@ -82,7 +85,6 @@ public class VentaController {
             total = total.add(detalle.getSubtotal());
         }
 
-        // 4. Asignar total y guardar
         venta.setTotal(total);
         venta.setDetails(detalles);
         saleService.save(venta);
@@ -90,32 +92,40 @@ public class VentaController {
         return "Venta guardada correctamente";
     }
 
-    // Listado de ventas con filtros
+    // ✅ Listado de ventas con filtros y paginación
     @GetMapping("/listado")
-    public String listadoVentas(@RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaInicio,
-                                @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaFin,
-                                @RequestParam(required = false) String cliente,
-                                Model model) {
+    public String listadoVentas(
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaInicio,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaFin,
+            @RequestParam(required = false) String cliente,
+            @PageableDefault(size = 7, sort = "date", direction = Sort.Direction.DESC) Pageable pageable,
+            Model model) {
 
-        List<Sale> ventas;
+        Page<Sale> ventas;
 
+        // 🗓 Filtro por fechas
         if (fechaInicio != null && fechaFin != null) {
-            ventas = saleService.findByDateBetween(fechaInicio, fechaFin);
-        } else if (cliente != null && !cliente.isEmpty()) {
-            ventas = saleService.searchByClientName(cliente);
-        } else {
-            ventas = saleService.findAll();
+            ventas = saleService.findByDateBetween(fechaInicio, fechaFin, pageable);
+        }
+        // 🔍 Filtro por nombre de cliente
+        else if (cliente != null && !cliente.isEmpty()) {
+            ventas = saleService.searchByClientName(cliente, pageable);
+        }
+        // 🔁 Sin filtros (todos los datos paginados)
+        else {
+            ventas = saleService.findAll(pageable);
         }
 
         model.addAttribute("ventas", ventas);
         model.addAttribute("fechaInicio", fechaInicio);
         model.addAttribute("fechaFin", fechaFin);
         model.addAttribute("cliente", cliente);
+        model.addAttribute("page", ventas); // Para usar en el HTML con paginación
 
         return "ventas/listado";
     }
 
-    // Ver detalle de una venta
+    // Ver detalles de una venta específica
     @GetMapping("/detalle/{id}")
     public String detalleVenta(@PathVariable Long id, Model model) {
         Sale venta = saleService.findById(id);
@@ -130,9 +140,4 @@ public class VentaController {
 
         return "ventas/detalle";
     }
-
-
-
 }
-
-
