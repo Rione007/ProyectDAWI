@@ -56,9 +56,8 @@
                             class="btn btn-sm btn-warning"
                             data-bs-toggle="modal"
                             data-bs-target="#stockModal"
-                            th:data-product-name="${prod.name}"
-                            th:data-product-id="${prod.id}"><i class="fas fa-edit"></i>
-                        Ajustar
+                            th:attr="data-product-id=${prod.id}, data-product-name=${prod.name}, data-product-stock=${prod.stock}">
+                        Ajustar Stock
                     </button>
                 </td>
             </tr>
@@ -100,6 +99,5 @@
             </form>
         </div>
     </div>
-    <script th:src="@{/js/scripts.js}"></script>
 </section>
 </html>

@@ -319,25 +319,32 @@ setTimeout(function () {
     // Cargar al inicio
     actualizarKPIs();
 
-   //Script Stock-Control
-    document.addEventListener('DOMContentLoaded', function () {
-        const stockModal = document.getElementById('stockModal');
+document.addEventListener('DOMContentLoaded', function () {
+    const stockModal = document.getElementById('stockModal');
 
-        if (stockModal) {
-            stockModal.addEventListener('show.bs.modal', event => {
-                const button = event.relatedTarget;
-                const productName = button.getAttribute('data-product-name');
-                const productId = button.getAttribute('data-product-id');
+    if (stockModal) {
+        stockModal.addEventListener('show.bs.modal', event => {
+            const button = event.relatedTarget;
 
-                const modalProductName = stockModal.querySelector('#modalProductName');
-                const modalProductIdInput = stockModal.querySelector('#modalProductId');
+            const productName = button.getAttribute('data-product-name');
+            const productId = button.getAttribute('data-product-id');
+            const productStock = button.getAttribute('data-product-stock');
 
-                modalProductName.textContent = productName;
-                modalProductIdInput.value = productId;
-                stockModal.querySelector('#newStock').value = '';
-            });
-        }
-    });
+            // Referencias a elementos dentro del modal
+            const modalProductName = stockModal.querySelector('#modalProductName');
+            const modalProductIdInput = stockModal.querySelector('#modalProductId');
+            const modalCurrentStockInput = stockModal.querySelector('#currentStock');
+            const modalNewStockInput = stockModal.querySelector('#newStock');
+
+            // Asignar valores
+            modalProductName.textContent = productName;
+            modalProductIdInput.value = productId;
+            modalCurrentStockInput.value = productStock;
+            modalNewStockInput.value = ''; // limpio para que el usuario escriba
+        });
+    }
+});
+
 
     //Script DashBoard
     async function cargarUltimasVentas() {
