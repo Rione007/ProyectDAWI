@@ -280,6 +280,40 @@ document.addEventListener("DOMContentLoaded", () => {
 
 //JS cliente
 
+// Cuando cambie la selección del cliente
+document.getElementById("cliente").addEventListener("change", function() {
+    const clienteId = this.value;
+
+    if (clienteId) {
+        // Petición para obtener datos del cliente
+        fetch(`/clientes/${clienteId}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Error al obtener los datos del cliente");
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Llenar campos adicionales
+                document.getElementById("name").value = data.name || "";
+                document.getElementById("email").value = data.email || "";
+                document.getElementById("address").value = data.address || "";
+                document.getElementById("phone").value = data.phone || "";
+            })
+            .catch(error => {
+                console.error(error);
+                alert("No se pudieron cargar los datos del cliente");
+            });
+    } else {
+        // Si no hay cliente seleccionado, limpiar los campos
+        document.getElementById("name").value = "";
+        document.getElementById("email").value = "";
+        document.getElementById("address").value = "";
+        document.getElementById("phone").value = "";
+    }
+});
+
+
 setTimeout(function () {
     var alerta = document.getElementById('alerta-exito2');
     if (alerta) {
