@@ -217,13 +217,13 @@ document.addEventListener("DOMContentLoaded", () => {
         fila.innerHTML = `
             <td>${productoNombre}</td>
             <td class="cantidad">${cantidad}</td>
-            <td class="precio">S/ ${precio}</td>
-            <td>S/ ${subtotal}</td>
+            <td class="precio">S/ ${precio.toFixed(2)}</td>
+            <td>S/ ${subtotal.toFixed(2)}</td>
             <td><button class="btn btn-danger btn-sm eliminar">X</button></td>
         `;
 
         tablaDetalle.appendChild(fila);
-        totalVenta.textContent = total;
+        totalVenta.textContent = total.toFixed(2);
 
         fila.querySelector(".eliminar").addEventListener("click", () => {
             total -= subtotal;
