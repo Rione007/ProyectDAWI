@@ -7,8 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 
 @Service
 public class SaleServiceImpl implements SaleService {
@@ -50,13 +53,18 @@ public class SaleServiceImpl implements SaleService {
     }
 
     @Override
-    public List<Sale> findByDateBetween(LocalDate startDate, LocalDate endDate) {
-        return saleRepository.findByDateBetween(startDate, endDate);
+    public Page<Sale> findAll(Pageable pageable) {
+        return saleRepository.findAll(pageable);
     }
 
     @Override
-    public List<Sale> searchByClientName(String name) {
-        return saleRepository.findByClientNameContainingIgnoreCase(name);
+    public Page<Sale> findByDateBetween(LocalDate startDate, LocalDate endDate, Pageable pageable) {
+        return saleRepository.findByDateBetween(startDate, endDate, pageable);
+    }
+
+    @Override
+    public Page<Sale> searchByClientName(String name, Pageable pageable) {
+        return saleRepository.findByClientNameContainingIgnoreCase(name, pageable);
     }
 
 
@@ -74,6 +82,23 @@ public class SaleServiceImpl implements SaleService {
         Double total = saleRepository.getTotalSalesBetweenDates(startOfMonth, endOfMonth);
         return total != null ? total : 0.0;
     }
+
+    @Override
+    public List<Map<String, Object>> getUltimas5Ventas() {
+        List<Sale> ultimas = saleRepository.findTop5ByOrderByDateDesc();
+        List<Map<String, Object>> resultado = new ArrayList<>();
+
+        for (Sale sale : ultimas) {
+            Map<String, Object> item = new HashMap<>();
+            item.put("cliente", sale.getClient().getName());
+            item.put("monto", sale.getTotal());
+            item.put("fecha", sale.getDate().toString());
+            resultado.add(item);
+        }
+
+        return resultado;
+    }
+
 
 
 

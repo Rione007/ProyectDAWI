@@ -1,6 +1,8 @@
 package com.erp.dawsystem.controller;
 
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 
@@ -52,6 +54,11 @@ public class DashboardController {
         data.put("stockBajo", productService.countProductosStockBajo());
         data.put("totalClientes", clientService.countClientes());
         return data;
+    }
+    @GetMapping("/dashboard/ultimas-ventas")
+    @ResponseBody
+    public List<Map<String, Object>> getUltimasVentas() {
+        return saleService.getUltimas5Ventas(); // Este método lo crearás en el servicio
     }
 
 

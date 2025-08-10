@@ -4,6 +4,9 @@ import com.erp.dawsystem.entity.Sale;
 
 import java.time.LocalDate;
 import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import java.util.Map;
 
 
 public interface SaleService {
@@ -16,8 +19,11 @@ public interface SaleService {
     double getTotalVentasMes();
 
     List<Sale> findByClientId(Long clientId);
-    List<Sale> findByDateBetween(LocalDate startDate, LocalDate endDate);
-    List<Sale> searchByClientName(String name);
+    Page<Sale> findAll(Pageable pageable);
+    Page<Sale> findByDateBetween(LocalDate startDate, LocalDate endDate, Pageable pageable);
+    Page<Sale> searchByClientName(String name, Pageable pageable);
+    List<Map<String, Object>> getUltimas5Ventas();
+
 
 
 
