@@ -9,6 +9,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+
 @Controller
 @RequestMapping("/productos")
 public class ProductController {
@@ -23,24 +27,28 @@ public class ProductController {
     public String catalog(
             @RequestParam(required = false) String nombre,
             @RequestParam(required = false) String categoria,
+            @RequestParam(defaultValue = "0") int page,
             Model model) {
 
-        List<Product> productos;
+        Pageable pageable = PageRequest.of(page, 5); // 5 productos por página
+        Page<Product> productos;
 
         if ((nombre == null || nombre.isEmpty()) && (categoria == null || categoria.isEmpty())) {
-            productos = productService.findAll();
+            productos = productService.findAll(pageable);
         } else if (nombre != null && !nombre.isEmpty() && (categoria == null || categoria.isEmpty())) {
-            productos = productService.searchByName(nombre);
+            productos = productService.searchByName(nombre, pageable);
         } else if ((nombre == null || nombre.isEmpty()) && categoria != null && !categoria.isEmpty()) {
-            productos = productService.findByCategory(Category.valueOf(categoria));
+            productos = productService.findByCategory(Category.valueOf(categoria), pageable);
         } else {
-            productos = productService.findByNameContainingAndCategory(nombre, Category.valueOf(categoria));
+            productos = productService.findByNameContainingAndCategory(nombre, Category.valueOf(categoria), pageable);
         }
 
-        model.addAttribute("products", productos);
+        model.addAttribute("products", productos.getContent());
         model.addAttribute("categories", Category.values());
         model.addAttribute("nombre", nombre);
         model.addAttribute("categoria", categoria);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", productos.getTotalPages());
 
         return "productos/catalogo";
     }
@@ -50,24 +58,28 @@ public class ProductController {
     public String stockControl(
             @RequestParam(required = false) String nombre,
             @RequestParam(required = false) String categoria,
+            @RequestParam(defaultValue = "0") int page,
             Model model) {
 
-        List<Product> productos;
+        Pageable pageable = PageRequest.of(page, 8); // 8 productos por página
+        Page<Product> productos;
 
         if ((nombre == null || nombre.isEmpty()) && (categoria == null || categoria.isEmpty())) {
-            productos = productService.findByStockLessThanEqual(14);
+            productos = productService.findByStockLessThanEqual(14 , pageable);
         } else if (nombre != null && !nombre.isEmpty() && (categoria == null || categoria.isEmpty())) {
-            productos = productService.searchByName(nombre);
+            productos = productService.searchByName(nombre, pageable);
         } else if ((nombre == null || nombre.isEmpty()) && categoria != null && !categoria.isEmpty()) {
-            productos = productService.findByCategory(Category.valueOf(categoria));
+            productos = productService.findByCategory(Category.valueOf(categoria), pageable);
         } else {
-            productos = productService.findByNameContainingAndCategory(nombre, Category.valueOf(categoria));
+            productos = productService.findByNameContainingAndCategory(nombre, Category.valueOf(categoria), pageable);
         }
 
-        model.addAttribute("products", productos);
+        model.addAttribute("products", productos.getContent());
         model.addAttribute("categories", Category.values());
         model.addAttribute("nombre", nombre);
         model.addAttribute("categoria", categoria);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", productos.getTotalPages());
 
         return "productos/stock-control";
     }
@@ -132,12 +144,13 @@ public class ProductController {
         return "redirect:/productos/catalogo";
     }
 
-    // Buscar productos por nombre
     @GetMapping("/buscar")
     @ResponseBody
-    public List<Product> buscarProductos(@RequestParam String nombre) {
-        return productService.searchByName(nombre);
+    public List<Product> buscarProductos(@RequestParam String nombre,
+                                         @RequestParam(defaultValue = "0") int page,
+                                         @RequestParam(defaultValue = "50") int size) {
+        Page<Product> result = productService.searchByName(nombre, PageRequest.of(page, size));
+        return result.getContent();
     }
 
 }
-

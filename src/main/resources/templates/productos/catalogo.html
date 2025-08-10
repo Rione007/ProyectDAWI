@@ -65,6 +65,28 @@
       </tbody>
     </table>
 
+    <div class="mt-4 d-flex justify-content-center">
+      <nav>
+        <ul class="pagination">
+          <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+            <a class="page-link" th:href="@{/productos/catalogo(page=${currentPage - 1}, nombre=${nombre}, categoria=${categoria})}">Anterior</a>
+          </li>
+
+          <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages-1)}"
+              th:classappend="${i == currentPage} ? 'active'">
+            <a class="page-link"
+               th:href="@{/productos/catalogo(page=${i}, nombre=${nombre}, categoria=${categoria})}"
+               th:text="${i + 1}">1</a>
+          </li>
+
+          <li class="page-item" th:classappend="${currentPage + 1 == totalPages} ? 'disabled'">
+            <a class="page-link" th:href="@{/productos/catalogo(page=${currentPage + 1}, nombre=${nombre}, categoria=${categoria})}">Siguiente</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+
+
     <div class="text-end mt-4">
       <a th:href="@{/productos/create}" class="btn btn-outline-success">
         + Nuevo Producto

@@ -11,14 +11,18 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 @Service
 public class ProductServiceImpl implements ProductService {
+
     @Autowired
     private ProductRepository productRepository;
 
     @Override
-    public List<Product> findAll() {
-        return productRepository.findAll();
+    public Page<Product> findAll(Pageable pageable) {
+        return productRepository.findAll(pageable);
     }
 
     @Override
@@ -45,25 +49,18 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> findByCategory(Category category) {
-        return productRepository.findByCategory(category);
+    public Page<Product> findByCategory(Category category, Pageable pageable) {
+        return productRepository.findByCategory(category, pageable);
     }
 
     @Override
-    public List<Product> searchByName(String name) {
-        return productRepository.findByNameContainingIgnoreCase(name);
+    public Page<Product> searchByName(String name, Pageable pageable) {
+        return productRepository.findByNameContainingIgnoreCase(name, pageable);
     }
 
     @Override
-    public List<Product> findByStockLessThanEqual(int stock) {
-        return productRepository.findByStockLessThanEqual(stock);
-    }
-
-    @Override
-    public void adjustStock(Long id, int stock) {
-        Product product = productRepository.findById(id).orElseThrow(() -> new RuntimeException("Producto no encontrado"));
-        product.setStock(stock);
-        productRepository.save(product);
+    public Page<Product> findByStockLessThanEqual(int stock , Pageable pageable) {
+        return productRepository.findByStockLessThanEqual(stock ,pageable );
     }
 
     @Override
@@ -72,13 +69,12 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> findByNameContainingAndCategory(String name, Category category) {
-        return productRepository.findByNameContainingAndCategory(name, category);
+    public Page<Product> findByNameContainingAndCategory(String name, Category category, Pageable pageable) {
+        return productRepository.findByNameContainingAndCategory(name, category, pageable);
     }
-
     @Override
     public int countProductosStockBajo() {
-        return findByStockLessThanEqual(15).size();
+        return (int) findByStockLessThanEqual(14, Pageable.unpaged()).getTotalElements();
     }
 
 

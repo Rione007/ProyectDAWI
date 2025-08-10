@@ -6,9 +6,13 @@ import com.erp.dawsystem.entity.Product;
 import java.math.BigDecimal;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 public interface ProductService{
 
-    List<Product> findAll(); //Listar todos los productos
+    Page<Product> findAll(Pageable pageable);
+    //Listar todos los productos
     Product findById(Long id); //Obtener uno por ID
     void save(Product product); //Crear uno nuevo
     void update(Product product); //Actualizar datos de un producto
@@ -18,11 +22,11 @@ public interface ProductService{
 
 
 
-    List<Product> findByCategory(Category category); //Filtrar por categoria
-    List<Product> searchByName(String name); //Búsqueda por nombre(contiene)
-    List<Product> findByStockLessThanEqual(int stock); //Productos con bajo stock
-    void adjustStock(Long id, int stock); //Aumentar o disminuir el stock
-    List<Product> findByNameContainingAndCategory(String name, Category category);
+    Page<Product> findByCategory(Category category, Pageable pageable);
+
+    Page<Product> searchByName(String name, Pageable pageable);
+    Page<Product> findByStockLessThanEqual(int stock,Pageable pageable ); //Productos con bajo stock
+    Page<Product> findByNameContainingAndCategory(String name, Category category, Pageable pageable);
     List<Product> findByPriceBetween(BigDecimal min, BigDecimal max); //Buscar productos por rango de precio
 
 }
