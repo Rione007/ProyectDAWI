@@ -2,11 +2,13 @@ package com.erp.dawsystem.controller;
 
 import com.erp.dawsystem.entity.Client;
 import com.erp.dawsystem.service.interfaces.ClientService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -19,40 +21,70 @@ public class ClientController {
         this.clientService = clientService;
     }
 
-    // 👉 Mostrar lista con filtro
+    // ✅ Listado con paginación y filtro
     @GetMapping("/gestion_cliente")
-    public String listarClientes(@RequestParam(required = false) String filtro, Model model) {
-        List<Client> clientes = (filtro == null || filtro.isEmpty())
-                ? clientService.findAll()
-                : clientService.searchByName(filtro);
+    public String listarClientes(
+            @RequestParam(required = false) String filtro,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size,
+            Model model) {
 
-        model.addAttribute("clientes", clientes);
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Client> clientesPage;
+
+        if (filtro == null || filtro.isEmpty()) {
+            clientesPage = clientService.findAllPaginated(pageable);
+        } else {
+            clientesPage = clientService.searchByNamePaginated(filtro, pageable);
+        }
+
+        model.addAttribute("clientes", clientesPage.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", clientesPage.getTotalPages());
+        model.addAttribute("totalItems", clientesPage.getTotalElements());
         model.addAttribute("filtro", filtro);
+
         return "mantenimiento/cliente/gestion_cliente";
     }
 
-    // 👉 Mostrar formulario para nuevo cliente
+    // ✅ Formulario nuevo cliente
     @GetMapping("/nuevo")
-    public String mostrarFormularioNuevo(Model model) {
+    public String mostrarFormularioNuevo(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(required = false) String filtro,
+            Model model) {
         model.addAttribute("cliente", new Client());
+        model.addAttribute("page", page);
+        model.addAttribute("filtro", filtro);
         return "mantenimiento/cliente/NuevoCliente";
     }
 
-    // 👉 Mostrar formulario para editar cliente
+    // ✅ Formulario editar cliente
     @GetMapping("/editar/{id}")
-    public String mostrarFormularioEditar(@PathVariable Long id, Model model) {
+    public String mostrarFormularioEditar(
+            @PathVariable Long id,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(required = false) String filtro,
+            Model model) {
         Optional<Client> optCliente = clientService.findById(id);
         if (optCliente.isPresent()) {
             model.addAttribute("cliente", optCliente.get());
+            model.addAttribute("page", page);
+            model.addAttribute("filtro", filtro);
             return "mantenimiento/cliente/EditarClient";
         } else {
-            return "redirect:/clientes/gestion_cliente";
+            return "redirect:/clientes/gestion_cliente?page=" + page + "&filtro=" + (filtro != null ? filtro : "");
         }
     }
 
-    // 👉 Guardar cliente (crear o actualizar)
+    // ✅ Guardar cliente (crear o actualizar)
     @PostMapping("/guardar")
-    public String guardarCliente(@ModelAttribute("cliente") Client cliente, Model model) {
+    public String guardarCliente(
+            @ModelAttribute("cliente") Client cliente,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(required = false) String filtro,
+            Model model) {
+
         boolean esNuevo = (cliente.getId() == null);
 
         if (esNuevo && clientService.existsByEmail(cliente.getEmail())) {
@@ -61,7 +93,6 @@ public class ClientController {
         }
 
         if (!esNuevo) {
-            // Validar si está cambiando a un email que ya existe
             Optional<Client> existente = clientService.findById(cliente.getId());
             if (existente.isPresent() && !existente.get().getEmail().equals(cliente.getEmail())
                     && clientService.existsByEmail(cliente.getEmail())) {
@@ -72,26 +103,47 @@ public class ClientController {
 
         if (esNuevo) {
             clientService.create(cliente);
-            model.addAttribute("mensaje", "Cliente registrado exitosamente.");
         } else {
             clientService.update(cliente.getId(), cliente);
-            model.addAttribute("mensaje", "Cliente actualizado exitosamente.");
         }
 
-        return "redirect:/clientes/gestion_cliente";
+        return "redirect:/clientes/gestion_cliente?page=" + page + "&filtro=" + (filtro != null ? filtro : "");
     }
 
-    // 👉 Eliminar cliente
+    // ✅ Eliminar cliente
     @GetMapping("/eliminar/{id}")
-    public String eliminarCliente(@PathVariable Long id, Model model) {
+    public String eliminarCliente(
+            @PathVariable Long id,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(required = false) String filtro) {
+
+        // Eliminar el cliente
         clientService.delete(id);
-        return "redirect:/clientes/gestion_cliente?mensaje=Cliente eliminado correctamente";
+
+        // Comprobar cuántos quedan en la página actual
+        Pageable pageable = PageRequest.of(page, 5); // 5 es tu size por defecto
+        Page<Client> clientesPage;
+
+        if (filtro == null || filtro.isEmpty()) {
+            clientesPage = clientService.findAllPaginated(pageable);
+        } else {
+            clientesPage = clientService.searchByNamePaginated(filtro, pageable);
+        }
+
+        // Si no hay datos en la página actual y no estamos en la primera, retroceder una página
+        if (clientesPage.isEmpty() && page > 0) {
+            page--;
+        }
+
+        return "redirect:/clientes/gestion_cliente?page=" + page +
+                "&filtro=" + (filtro != null ? filtro : "");
     }
 
-    // 👉 Buscar clientes desde JS (opcional)
+
+    // Buscar clientes por nombre (opcional AJAX)
     @GetMapping("/buscar")
     @ResponseBody
-    public List<Client> buscarClientes(@RequestParam String nombre) {
+    public java.util.List<Client> buscarClientes(@RequestParam String nombre) {
         return clientService.searchByName(nombre);
     }
 }

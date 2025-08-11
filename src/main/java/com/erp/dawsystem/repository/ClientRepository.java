@@ -7,6 +7,9 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 @Repository
 public interface ClientRepository extends JpaRepository<Client, Long> {
 
@@ -21,4 +24,9 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
 
     // Buscar por dirección ignorando mayúsculas
     List<Client> findByAddressContainingIgnoreCase(String address);
+
+
+    // ✅ Soporte de búsqueda paginada
+    Page<Client> findByNameContainingIgnoreCase(String name, Pageable pageable);
+
 }

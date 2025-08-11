@@ -6,6 +6,9 @@ import com.erp.dawsystem.service.interfaces.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -77,7 +80,15 @@ public class ClientServiceImpl implements ClientService {
         return (int) clientRepository.count();
     }
 
+    @Override
+    public Page<Client> findAllPaginated(Pageable pageable) {
+        return clientRepository.findAll(pageable);
+    }
 
+    @Override
+    public Page<Client> searchByNamePaginated(String name, Pageable pageable) {
+        return clientRepository.findByNameContainingIgnoreCase(name, pageable);
+    }
 
 
 

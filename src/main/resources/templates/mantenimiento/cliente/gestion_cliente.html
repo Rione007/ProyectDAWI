@@ -39,7 +39,7 @@
 
         <!-- Botón nuevo cliente -->
         <div class="mb-3 d-flex justify-content-between">
-            <a th:href="@{/clientes/nuevo}" class="btn btn-success mb-3">
+            <a th:href="@{/clientes/nuevo(page=${currentPage}, filtro=${filtro})}" class="btn btn-success mb-3">
                 <i class="fas fa-plus"></i> Nuevo Cliente
             </a>
         </div>
@@ -67,10 +67,14 @@
                         <td th:text="${c.phone}">999999999</td>
                         <td th:text="${c.address}">Av. Falsa 123</td>
                         <td>
-                            <a th:href="@{/clientes/editar/{id}(id=${c.id})}" class="btn btn-sm btn-warning">
+                            <!-- ✅ Editar conservando página y filtro -->
+                            <a th:href="@{/clientes/editar/{id}(id=${c.id}, page=${currentPage}, filtro=${filtro})}"
+                               class="btn btn-sm btn-warning">
                                 <i class="fas fa-edit"></i> Editar
                             </a>
-                            <a th:href="@{/clientes/eliminar/{id}(id=${c.id})}"
+
+                            <!-- ✅ Eliminar conservando página y filtro -->
+                            <a th:href="@{/clientes/eliminar/{id}(id=${c.id}, page=${currentPage}, filtro=${filtro})}"
                                class="btn btn-sm btn-danger btn-eliminar-client"
                                th:attr="data-nombre=${c.name}">
                                 <i class="fas fa-trash"></i> Eliminar
@@ -79,6 +83,34 @@
                     </tr>
                     </tbody>
                 </table>
+
+                <!-- ✅ Paginación -->
+                <nav th:if="${totalPages > 1}">
+                    <ul class="pagination justify-content-center">
+
+                        <!-- Botón Anterior -->
+                        <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+                            <a class="page-link"
+                               th:href="@{/clientes/gestion_cliente(page=${currentPage - 1}, size=5, filtro=${filtro})}">Anterior</a>
+                        </li>
+
+                        <!-- Números de página -->
+                        <li class="page-item"
+                            th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+                            th:classappend="${i == currentPage} ? 'active'">
+                            <a class="page-link"
+                               th:text="${i + 1}"
+                               th:href="@{/clientes/gestion_cliente(page=${i}, size=5, filtro=${filtro})}"></a>
+                        </li>
+
+                        <!-- Botón Siguiente -->
+                        <li class="page-item" th:classappend="${currentPage + 1 == totalPages} ? 'disabled'">
+                            <a class="page-link"
+                               th:href="@{/clientes/gestion_cliente(page=${currentPage + 1}, size=5, filtro=${filtro})}">Siguiente</a>
+                        </li>
+                    </ul>
+                </nav>
+
             </div>
         </div>
     </div>

@@ -5,6 +5,9 @@ import com.erp.dawsystem.entity.Client;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 public interface ClientService {
 
     // Listar todos los clientes
@@ -29,4 +32,10 @@ public interface ClientService {
     boolean existsByEmail(String email);
 
     int countClientes();
+
+    // ✅ Nuevo método para paginación
+    Page<Client> findAllPaginated(Pageable pageable);
+
+    // ✅ Búsqueda paginada
+    Page<Client> searchByNamePaginated(String name, Pageable pageable);
 }
