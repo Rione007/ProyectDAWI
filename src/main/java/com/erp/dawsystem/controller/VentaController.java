@@ -98,7 +98,7 @@ public class VentaController {
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaInicio,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaFin,
             @RequestParam(required = false) String cliente,
-            @PageableDefault(size = 7, sort = "date", direction = Sort.Direction.DESC) Pageable pageable,
+            @PageableDefault(size = 5, sort = "date", direction = Sort.Direction.DESC) Pageable pageable,
             Model model) {
 
         Page<Sale> ventas;
