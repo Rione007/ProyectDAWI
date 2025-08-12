@@ -236,44 +236,47 @@ document.addEventListener("DOMContentLoaded", () => {
         cantidadInput.value = 1;
     });
 
-    // Confirmar venta
-    document.getElementById("btnConfirmarVenta").addEventListener("click", () => {
-        const clienteId = document.getElementById("cliente").value;
-        const fecha = document.getElementById("fecha").value;
+    // confirmar venta y pdf
+        document.getElementById("btnConfirmarVenta").addEventListener("click", () => {
+             const clienteId = document.getElementById("cliente").value;
+             const fecha = document.getElementById("fecha").value;
 
-        if (!clienteId || tablaDetalle.children.length === 0) {
-            alert("Debe seleccionar cliente y al menos un producto");
-            return;
-        }
+             if (!clienteId || tablaDetalle.children.length === 0) {
+                 alert("Debe seleccionar cliente y al menos un producto");
+                 return;
+             }
 
-        const productIds = [];
-        const quantities = [];
-        const prices = [];
+             const productIds = [];
+             const quantities = [];
+             const prices = [];
 
-        document.querySelectorAll("#tablaDetalle tbody tr").forEach(row => {
-            productIds.push(row.dataset.productId);
-            quantities.push(row.querySelector(".cantidad").textContent);
-            prices.push(row.querySelector(".precio").textContent.replace("S/ ", ""));
-        });
+             document.querySelectorAll("#tablaDetalle tbody tr").forEach(row => {
+                 productIds.push(row.dataset.productId);
+                 quantities.push(row.querySelector(".cantidad").textContent);
+                 prices.push(row.querySelector(".precio").textContent.replace("S/ ", ""));
+             });
 
-        const formData = new URLSearchParams();
-        formData.append("clientId", clienteId);
-        formData.append("date", fecha);
-        productIds.forEach(id => formData.append("productIds", id));
-        quantities.forEach(q => formData.append("quantities", q));
-        prices.forEach(p => formData.append("prices", p));
+             const formData = new URLSearchParams();
+             formData.append("clientId", clienteId);
+             formData.append("date", fecha);
+             productIds.forEach(id => formData.append("productIds", id));
+             quantities.forEach(q => formData.append("quantities", q));
+             prices.forEach(p => formData.append("prices", p));
 
-        fetch("/ventas/guardar", {
-            method: "POST",
-            headers: { "Content-Type": "application/x-www-form-urlencoded" },
-            body: formData.toString()
-        })
-        .then(res => res.text())
-        .then(msg => {
-            alert(msg);
-            window.location.href = "/ventas/listado";
-        });
-    });
+             fetch("/ventas/guardar", {
+                 method: "POST",
+                 headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                 body: formData.toString()
+             })
+             .then(res => res.json()) // Recibes el ID de la venta
+             .then(ventaId => {
+                 // Abre la boleta en una nueva pestaña
+                 window.open(`/ventas/boleta/${ventaId}`, "_blank");
+
+                 // Redirige a listado de ventas en la pestaña actual
+                 window.location.href = "/ventas/listado";
+             });
+         });
 });
 //fin de venta
 

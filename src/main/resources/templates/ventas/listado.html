@@ -33,6 +33,7 @@
                                th:value="${cliente}" placeholder="Buscar cliente...">
                     </div>
                     <div class="col-md-2 align-self-end">
+                        <a href="/ventas/listado" class="btn btn-danger w-100">Limpiar filtros</a><br><br>
                         <button type="submit" class="btn btn-primary w-100">Buscar</button>
                     </div>
                 </form>
@@ -81,6 +82,9 @@
                             </a>
                             <a href="#" class="btn btn-sm btn-danger disabled">
                                 <i class="fas fa-trash"></i> Eliminar
+                            </a>
+                            <a th:href="@{'/ventas/boleta/' + ${venta.id}}" class="btn btn-sm btn-success" target="_blank">
+                                <i class="bi bi-file-pdf-fill"></i> Boleta
                             </a>
                         </td>
                     </tr>
