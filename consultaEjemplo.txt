@@ -1,0 +1,45 @@
+use erpdb;
+
+INSERT INTO usuario (username, password, role)
+
+VALUES (
+
+'admin',
+
+'$2a$10$bw59.tmFtH/PQbTRt8JlB.iHjd0UPAlwfZFIA9FLIC2ylocu/1pP.', -- hash de 1234
+
+'ADMIN'
+
+);
+
+INSERT INTO erpdb.cliente (id, address, email, name, phone) VALUES (1, '123 Calle Falsa', 'juan.perez@example.com', 'Juan Perez', '555-1234'), (2, '456 Avenida Central', 'maria.lopez@example.com', 'Maria Lopez', '555-5678'), (3, '789 Boulevard Norte', 'carlos.ramirez@example.com', 'Carlos Ramirez', '555-8765'), (4, '321 Calle Sur', 'ana.garcia@example.com', 'Ana Garcia', '555-4321'), (5, '654 Ruta Este', 'luis.martinez@example.com', 'Luis Martinez', '555-2468');
+
+INSERT INTO producto (category, description, name, price, stock) VALUES
+('ELECTRODOMESTICOS', 'Refrigeradora de 2 puertas con bajo consumo de energía', 'Refrigeradora Mabe 250L', 1500.00, 10),
+('ELECTRODOMESTICOS', 'Cocina a gas de 4 hornillas con horno eléctrico', 'Cocina Indurama 4H', 900.00, 15),
+('ELECTRODOMESTICOS', 'Lavadora automática de 12kg con 8 programas', 'Lavadora LG 12Kg', 1300.00, 8),
+('ELECTRODOMESTICOS', 'Microondas digital con grill 20L', 'Microondas Samsung Grill', 450.00, 20),
+('ELECTRODOMESTICOS', 'Aspiradora vertical sin bolsa', 'Aspiradora Philips 1800W', 700.00, 12);
+
+INSERT INTO producto (category, description, name, price, stock) VALUES
+('DISPOSITIVOS_DE_CUIDADO_PERSONAL', 'Secadora de cabello iónica de 2000W', 'Secadora Remington Pro', 120.00, 30),
+('DISPOSITIVOS_DE_CUIDADO_PERSONAL', 'Afeitadora eléctrica recargable 3 cabezales', 'Afeitadora Philips AquaTouch', 250.00, 18),
+('DISPOSITIVOS_DE_CUIDADO_PERSONAL', 'Plancha de cabello de cerámica', 'Plancha Babyliss Slim', 180.00, 22),
+('DISPOSITIVOS_DE_CUIDADO_PERSONAL', 'Cepillo dental eléctrico con temporizador', 'Cepillo Oral-B Vitality', 95.00, 40),
+('DISPOSITIVOS_DE_CUIDADO_PERSONAL', 'Masajeador de cuello y hombros', 'Masajeador Shiatsu Relax', 220.00, 10);
+
+INSERT INTO producto (category, description, name, price, stock) VALUES
+('DISPOSITIVOS_DE_COMUNICACION', 'Smartphone Android con 128GB de almacenamiento', 'Xiaomi Redmi Note 13', 950.00, 25),
+('DISPOSITIVOS_DE_COMUNICACION', 'Teléfono inalámbrico DECT para casa', 'Panasonic KX-TGB210', 180.00, 15),
+('DISPOSITIVOS_DE_COMUNICACION', 'Tablet 10” FullHD con 4GB RAM', 'Samsung Galaxy Tab A9', 750.00, 20),
+('DISPOSITIVOS_DE_COMUNICACION', 'Smartwatch con sensor cardíaco y GPS', 'Amazfit GTS 4', 400.00, 18),
+('DISPOSITIVOS_DE_COMUNICACION', 'Auriculares Bluetooth con cancelación de ruido', 'Sony WH-1000XM4', 1100.00, 12);
+
+INSERT INTO producto (category, description, name, price, stock) VALUES
+('DISPOSITIVOS_MEDICOS', 'Tensiómetro digital de brazo', 'Omron M3 Comfort', 350.00, 15),
+('DISPOSITIVOS_MEDICOS', 'Oxímetro de pulso portátil', 'Beurer PO 40', 120.00, 25),
+('DISPOSITIVOS_MEDICOS', 'Glucómetro con 50 tiras reactivas', 'Accu-Chek Guide', 280.00, 20),
+('DISPOSITIVOS_MEDICOS', 'Termómetro infrarrojo sin contacto', 'Braun ThermoScan', 200.00, 30),
+('DISPOSITIVOS_MEDICOS', 'Nebulizador ultrasónico para uso doméstico', 'Philips InnoSpire Go', 400.00, 10);
+
+
